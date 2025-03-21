@@ -1,0 +1,35 @@
+name: git-configure
+
+on:
+        workflow_call:
+                inputs:
+                        repository-owner:
+                                description: The repository owner (default `bracketed`, can be customised)
+                                required: false
+                                default: bracketed
+                                type: string
+                        operating-system:
+                                description: Base OS to use (default `ubuntu-latest`)
+                                required: false
+                                default: ubuntu-latest
+                                type: string
+
+concurrency:
+        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }|${{ inputs.operating-system }}
+        cancel-in-progress: true
+
+jobs:
+        check:
+                name: Configure Git CLI
+                runs-on: ${{ inputs.operating-system }}
+                if: github.repository_owner == ${{ inputs.repository-owner }}
+                steps:
+                        - name: Configure Git
+                          run: |
+                                  git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git"
+                                  git config --local user.email "${GITHUB_EMAIL}"
+                                  git config --local user.name "${GITHUB_USER}"
+                          env:
+                                  GITHUB_USER: github-actions[bot]
+                                  GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+                                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

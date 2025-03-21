@@ -1,0 +1,83 @@
+name: version-check
+
+on:
+        workflow_call:
+                inputs:
+                        repository-owner:
+                                description: The repository owner (default `bracketed`, can be customised)
+                                required: false
+                                default: bracketed
+                                type: string
+                        operating-system:
+                                description: Base OS to use (default `ubuntu-latest`)
+                                required: false
+                                default: ubuntu-latest
+                                type: string
+                        with-submodules:
+                                description: Whether to include submodules when checking out the repository (default `true`)
+                                required: false
+                                default: 'true'
+                                type: string
+                        working-directory:
+                                description: The working directory to run the commands in
+                                required: false
+                                default: .
+                                type: string
+                        checkout-depth:
+                                description: The depth of `actions/checkout` to fetch from (default `0`)
+                                required: false
+                                default: 0
+                                type: number
+                secrets:
+                        BRSFTWORKS_TOKEN:
+                                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
+                                required: true
+
+concurrency:
+        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}
+        cancel-in-progress: true
+
+jobs:
+        check:
+                name: Publish ${{ inputs.project-name }}
+                runs-on: ${{ inputs.operating-system }}
+                if: github.repository_owner == ${{ inputs.repository-owner }}
+                steps:
+                        - name: Checkout Project
+                          uses: actions/checkout@v4
+                          with:
+                                  fetch-depth: ${{ inputs.checkout-depth }}
+                                  ref: main
+                                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                                  submodules: ${{ inputs.with-submodules }}
+
+                        - name: Configure Git
+                          uses: Bracketed/Workflows/Git-Configure.yml@main
+
+                        #- name: Configure Git
+                        #  run: |
+                        #          git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git"
+                        #          git config --local user.email "${GITHUB_EMAIL}"
+                        #          git config --local user.name "${GITHUB_USER}"
+                        #  env:
+                        #          GITHUB_USER: github-actions[bot]
+                        #          GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+                        #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+                        - name: Check for version change
+                          id: version-check
+                          run: |
+                                  OLD_VERSION=$(git show HEAD~1:package.json | jq -r .version)
+                                  NEW_VERSION=$(jq -r .version package.json)
+
+                                  echo "Old Version: $OLD_VERSION"
+                                  echo "New Version: $NEW_VERSION"
+
+                                  if [ "$OLD_VERSION" == "$NEW_VERSION" ]; then
+                                    echo "Version has not changed. Exiting..."
+                                    exit 0
+                                  fi
+
+                        - name: Trigger additional workflow
+                          run: |
+                                  echo "Version has changed! Triggering additional workflow..."
