@@ -1,0 +1,42 @@
+name: git-cancel
+
+on:
+        workflow_call:
+                inputs:
+                        repository-owner:
+                                description: The repository owner (default `bracketed`, can be customised)
+                                required: false
+                                default: bracketed
+                                type: string
+                        operating-system:
+                                description: Base OS to use (default `ubuntu-latest`)
+                                required: false
+                                default: ubuntu-latest
+                                type: string
+                        actions-id:
+                                description: Actions Run ID
+                                required: true
+                                type: string
+                secrets:
+                        BRSFTWORKS_TOKEN:
+                                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
+                                required: true
+
+concurrency:
+        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.operating-system }}|${{ inputs.actions-id }}
+        cancel-in-progress: true
+
+jobs:
+        check:
+                name: Cancel and exit workflow using GH
+                runs-on: ${{ inputs.operating-system }}
+                if: github.repository_owner == ${{ inputs.repository-owner }}
+                permissions:
+                        actions: write
+                steps:
+                        - name: Exit
+                          run: |
+                                  gh run cancel ${{ inputs.actions-id }}
+                                  gh run watch ${{ inputs.actions-id }}
+                          env:
+                                  GH_TOKEN: ${{ secrets.BRSFTWORKS_TOKEN }}

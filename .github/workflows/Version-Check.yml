@@ -3,6 +3,10 @@ name: version-check
 on:
         workflow_call:
                 inputs:
+                        workflow-runid:
+                                description: The run ID of the current workflow
+                                required: true
+                                type: string
                         project-name:
                                 description: The name of the project
                                 required: true
@@ -43,7 +47,7 @@ on:
                                 required: true
 
 concurrency:
-        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}
+        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.project-name }}|${{ inputs.workflow-runid }}|${{ inputs.checkout-depth }}|${{ inputs.checkout-ref }}
         cancel-in-progress: true
 
 jobs:
@@ -51,6 +55,8 @@ jobs:
                 name: Check version for ${{ inputs.project-name }}
                 runs-on: ${{ inputs.operating-system }}
                 if: github.repository_owner == ${{ inputs.repository-owner }}
+                outputs:
+                        result: ${{ steps.version-check.outputs.result }}
                 steps:
                         - name: Checkout Project
                           uses: actions/checkout@v4
@@ -72,9 +78,11 @@ jobs:
 
                         - name: Check for version change
                           id: version-check
+
                           run: |
                                   if [ ! -f package.json ]; then
-                                    echo "package.json not found. Exiting..."
+                                    echo "package.json not found."
+                                    echo "result=cancel" >> "$GITHUB_OUTPUT"
                                     exit 0
                                   fi
 
@@ -86,9 +94,17 @@ jobs:
 
                                   if [ "$OLD_VERSION" == "$NEW_VERSION" ]; then
                                     echo "Version has not changed. Exiting..."
+                                    echo "result=cancel" >> "$GITHUB_OUTPUT"
                                     exit 0
                                   fi
 
-                        - name: Trigger additional workflow
-                          run: |
-                                  echo "Version has changed! Triggering additional workflow..."
+        cancel:
+                needs: [check]
+                if: needs.check.outputs.result == 'cancel'
+                uses: Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main
+                name: Cancel workflows
+                permissions:
+                        actions: write
+                with:
+                        actions-id: ${{ inputs.workflow-runid }}
+                secrets: inherit
