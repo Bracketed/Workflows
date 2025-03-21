@@ -1,12 +1,8 @@
-name: Version-Check
+name: publish
 
 on:
         workflow_call:
                 inputs:
-                        workflow-runid:
-                                description: The run ID of the current workflow
-                                required: true
-                                type: string
                         project-name:
                                 description: The name of the project
                                 required: true
@@ -16,13 +12,18 @@ on:
                                 required: false
                                 default: bracketed
                                 type: string
+                        node-version:
+                                description: The version of Node.js to use (default `23`)
+                                required: false
+                                default: 23
+                                type: number
                         operating-system:
-                                description: Base OS to use (default `ubuntu-latest`)
+                                description: The operating system to use (default `ubuntu-latest`)
                                 required: false
                                 default: ubuntu-latest
                                 type: string
                         with-submodules:
-                                description: Whether to include submodules when checking out the repository (default `true`)
+                                description: Whether to include submodules when checking out the repository (default `false`)
                                 required: false
                                 default: 'true'
                                 type: string
@@ -31,6 +32,16 @@ on:
                                 required: false
                                 default: .
                                 type: string
+                        skip-automatic-bump:
+                                description: Whether to skip the automatic bumping of the package version
+                                required: false
+                                default: true
+                                type: boolean
+                        build:
+                                description: Whether to run `yarn build` before publishing
+                                required: false
+                                default: true
+                                type: boolean
                         checkout-depth:
                                 description: The depth of `actions/checkout` to fetch from (default `0`)
                                 required: false
@@ -42,62 +53,52 @@ on:
                                 default: main
                                 type: string
                 secrets:
+                        NODE_AUTH_TOKEN:
+                                description: The token to authenticate with the NPM registry
+                                required: true
                         BRSFTWORKS_TOKEN:
                                 description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
                                 required: true
 
 concurrency:
-        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.project-name }}|${{ inputs.workflow-runid }}|${{ inputs.checkout-depth }}|${{ inputs.checkout-ref }}
+        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.node-version }}
         cancel-in-progress: true
 
 jobs:
         check:
-                name: Check version for ${{ inputs.project-name }}
+                uses: Bracketed/Workflows/.github/workflows/Version-Check.yml@main
+
+        publish:
+                name: Publish ${{ inputs.project-name }}
                 runs-on: ${{ inputs.operating-system }}
                 if: github.repository_owner == ${{ inputs.repository-owner }}
-                outputs:
-                        result: ${{ steps.version-check.outputs.result }}
                 steps:
                         - name: Checkout Project
                           uses: actions/checkout@v4
                           with:
-                                  fetch-depth: ${{ inputs.checkout-depth }}
+                                  fetch-depth: ${{ inputs.checkout-ref }}
                                   ref: ${{ inputs.checkout-ref }}
                                   token: ${{ secrets.BRSFTWORKS_TOKEN }}
                                   submodules: ${{ inputs.with-submodules }}
 
+                        - name: Install dependencies
+                          uses: Bracketed/Workflows/actions/add-yarn-dependencies@main
+                          with:
+                                  node-version: ${{ inputs.node-version }}
+                                  immutable: true
+
                         - name: Configure Git
                           uses: Bracketed/Workflows/actions/git-configure@main
 
-                        - name: Check for version change
-                          id: version-check
+                        - name: Build
+                          if: inputs.build
+                          run: yarn build
 
+                        - name: Publish to NPM
+                          working-directory: ${{ inputs.working-directory }}
                           run: |
-                                  if [ ! -f package.json ]; then
-                                    echo "package.json not found."
-                                    echo "result=cancel" >> "$GITHUB_OUTPUT"
-                                    exit 0
-                                  fi
-
-                                  OLD_VERSION=$(git show HEAD~1:package.json | jq -r .version)
-                                  NEW_VERSION=$(jq -r .version package.json)
-
-                                  echo "Old Version: $OLD_VERSION"
-                                  echo "New Version: $NEW_VERSION"
-
-                                  if [ "$OLD_VERSION" == "$NEW_VERSION" ]; then
-                                    echo "Version has not changed. Exiting..."
-                                    echo "result=cancel" >> "$GITHUB_OUTPUT"
-                                    exit 0
-                                  fi
-
-        cancel:
-                needs: [check]
-                if: needs.check.outputs.result == 'cancel'
-                uses: Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main
-                name: Cancel workflows
-                permissions:
-                        actions: write
-                with:
-                        actions-id: ${{ inputs.workflow-runid }}
-                secrets: inherit
+                                  yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
+                                  yarn config set npmPublishRegistry "https://registry.yarnpkg.com"
+                                  yarn npm publish
+                          env:
+                                  NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

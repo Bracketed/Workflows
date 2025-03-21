@@ -1,0 +1,40 @@
+inputs:
+        frozen:
+                description: Use the `--frozen-lockfile` flag when installing npm dependencies
+                required: false
+                default: 'false'
+        flags:
+                description: Extra flags to be added onto the `npm install` command
+                required: false
+                default: ''
+        node-version:
+                description: The version of Node.js to use
+                required: false
+                default: '23'
+
+name: Install dependencies with NPM
+description: Setup Node and install dependencies using NPM.
+
+runs:
+        using: composite
+        steps:
+                - name: Set up swap space
+                  if: runner.os == 'Linux'
+                  uses: Bracketed/Workflows/actions/set-swap-space@main
+                  with:
+                          swap-size-gb: 10
+
+                - name: Use Node.js v23
+                  uses: actions/setup-node@v4
+                  with:
+                          node-version: ${{ inputs.node-version }}
+
+                - name: Install dependencies (Frozen)
+                  if: ${{ inputs.frozen == 'true' }}
+                  shell: bash
+                  run: npm install --frozen-lockfile ${{ inputs.flags }}
+
+                - name: Install dependencies
+                  if: ${{ inputs.frozen == 'false' }}
+                  shell: bash
+                  run: npm install ${{ inputs.flags }}
