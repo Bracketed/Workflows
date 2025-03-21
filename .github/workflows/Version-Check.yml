@@ -52,7 +52,7 @@ jobs:
                                   submodules: ${{ inputs.with-submodules }}
 
                         - name: Configure Git
-                          uses: Bracketed/Workflows/Git-Configure.yml@main
+                          uses: Bracketed/Workflows/.github/workflows/Git-Configure.yml@main
 
                         #- name: Configure Git
                         #  run: |
