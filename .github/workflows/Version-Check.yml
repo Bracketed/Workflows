@@ -3,6 +3,10 @@ name: version-check
 on:
         workflow_call:
                 inputs:
+                        project-name:
+                                description: The name of the project
+                                required: true
+                                type: string
                         repository-owner:
                                 description: The repository owner (default `bracketed`, can be customised)
                                 required: false
@@ -39,7 +43,7 @@ concurrency:
 
 jobs:
         check:
-                name: Publish ${{ inputs.project-name }}
+                name: Check version for ${{ inputs.project-name }}
                 runs-on: ${{ inputs.operating-system }}
                 if: github.repository_owner == ${{ inputs.repository-owner }}
                 steps:
