@@ -1,104 +1,109 @@
-name: publish
+name: Node Package Publish
+description: Publish a node package to the NPM registry
 
 on:
-        workflow_call:
-                inputs:
-                        project-name:
-                                description: The name of the project
-                                required: true
-                                type: string
-                        repository-owner:
-                                description: The repository owner (default `bracketed`, can be customised)
-                                required: false
-                                default: bracketed
-                                type: string
-                        node-version:
-                                description: The version of Node.js to use (default `23`)
-                                required: false
-                                default: 23
-                                type: number
-                        operating-system:
-                                description: The operating system to use (default `ubuntu-latest`)
-                                required: false
-                                default: ubuntu-latest
-                                type: string
-                        with-submodules:
-                                description: Whether to include submodules when checking out the repository (default `false`)
-                                required: false
-                                default: 'true'
-                                type: string
-                        working-directory:
-                                description: The working directory to run the commands in
-                                required: false
-                                default: .
-                                type: string
-                        skip-automatic-bump:
-                                description: Whether to skip the automatic bumping of the package version
-                                required: false
-                                default: true
-                                type: boolean
-                        build:
-                                description: Whether to run `yarn build` before publishing
-                                required: false
-                                default: true
-                                type: boolean
-                        checkout-depth:
-                                description: The depth of `actions/checkout` to fetch from (default `0`)
-                                required: false
-                                default: 0
-                                type: number
-                        checkout-ref:
-                                description: The branch reference `actions/checkout` will use to pull from (default `main`)
-                                required: false
-                                default: main
-                                type: string
-                secrets:
-                        NODE_AUTH_TOKEN:
-                                description: The token to authenticate with the NPM registry
-                                required: true
-                        BRSFTWORKS_TOKEN:
-                                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
-                                required: true
+    workflow_call:
+        inputs:
+            project-name:
+                description: The name of the project
+                required: true
+                type: string
+            repository-owner:
+                description: The repository owner (default `bracketed`, can be customised)
+                required: false
+                default: bracketed
+                type: string
+            node-version:
+                description: The version of Node.js to use (default `23`)
+                required: false
+                default: 23
+                type: number
+            operating-system:
+                description: The operating system to use (default `ubuntu-latest`)
+                required: false
+                default: ubuntu-latest
+                type: string
+            with-submodules:
+                description: Whether to include submodules when checking out the repository (default `false`)
+                required: false
+                default: 'true'
+                type: string
+            working-directory:
+                description: The working directory to run the commands in
+                required: false
+                default: .
+                type: string
+            skip-automatic-bump:
+                description: Whether to skip the automatic bumping of the package version
+                required: false
+                default: true
+                type: boolean
+            build:
+                description: Whether to run `yarn build` before publishing
+                required: false
+                default: true
+                type: boolean
+            checkout-depth:
+                description: The depth of `actions/checkout` to fetch from (default `0`)
+                required: false
+                default: 0
+                type: number
+            checkout-ref:
+                description: The branch reference `actions/checkout` will use to pull from (default `main`)
+                required: false
+                default: main
+                type: string
+        secrets:
+            NODE_AUTH_TOKEN:
+                description: The token to authenticate with the NPM registry
+                required: true
+            BRSFTWORKS_TOKEN:
+                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
+                required: true
 
 concurrency:
-        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.node-version }}
-        cancel-in-progress: true
+    group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.node-version }}
+    cancel-in-progress: true
 
 jobs:
-        check:
-                uses: Bracketed/Workflows/.github/workflows/Version-Check.yml@main
+    check:
+        uses: Bracketed/Workflows/.github/workflows/Version-Check.yml@main
+        with:
+            workflow-runid: ${{ github.run_id }}
+            project-name: ${{inputs.project-name}}
+        secrets: inherit
 
-        publish:
-                name: Publish ${{ inputs.project-name }}
-                runs-on: ${{ inputs.operating-system }}
-                if: github.repository_owner == ${{ inputs.repository-owner }}
-                steps:
-                        - name: Checkout Project
-                          uses: actions/checkout@v4
-                          with:
-                                  fetch-depth: ${{ inputs.checkout-ref }}
-                                  ref: ${{ inputs.checkout-ref }}
-                                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
-                                  submodules: ${{ inputs.with-submodules }}
+    publish:
+        name: Publish ${{ inputs.project-name }}
+        runs-on: ${{ inputs.operating-system }}
+        if: github.repository_owner == ${{ inputs.repository-owner }}
+        steps:
+            - name: Checkout Project
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: ${{ inputs.checkout-ref }}
+                  ref: ${{ inputs.checkout-ref }}
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  submodules: ${{ inputs.with-submodules }}
 
-                        - name: Install dependencies
-                          uses: Bracketed/Workflows/actions/add-yarn-dependencies@main
-                          with:
-                                  node-version: ${{ inputs.node-version }}
-                                  immutable: true
+            - name: Install dependencies
+              uses: Bracketed/Workflows/actions/add-yarn-dependencies@main
+              with:
+                  node-version: ${{ inputs.node-version }}
+                  immutable: true
 
-                        - name: Configure Git
-                          uses: Bracketed/Workflows/actions/git-configure@main
+            - name: Configure Git
+              uses: Bracketed/Workflows/actions/git-configure@main
 
-                        - name: Build
-                          if: inputs.build
-                          run: yarn build
+            - name: Build
+              if: inputs.build
+              run: yarn build
 
-                        - name: Publish to NPM
-                          working-directory: ${{ inputs.working-directory }}
-                          run: |
-                                  yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
-                                  yarn config set npmPublishRegistry "https://registry.yarnpkg.com"
-                                  yarn npm publish
-                          env:
-                                  NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+            - name: Publish to NPM
+              working-directory: ${{ inputs.working-directory }}
+              run: |
+                  yarn config set npmAuthToken ${NODE_AUTH_TOKEN}
+                  yarn config set npmPublishRegistry "https://registry.yarnpkg.com"
+                  yarn npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

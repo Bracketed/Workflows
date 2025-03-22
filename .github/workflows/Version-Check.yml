@@ -1,103 +1,111 @@
-name: Version-Check
+name: Package.json Version Check
+description: Check the package.json version for a new version or same version
 
 on:
-        workflow_call:
-                inputs:
-                        workflow-runid:
-                                description: The run ID of the current workflow
-                                required: true
-                                type: string
-                        project-name:
-                                description: The name of the project
-                                required: true
-                                type: string
-                        repository-owner:
-                                description: The repository owner (default `bracketed`, can be customised)
-                                required: false
-                                default: bracketed
-                                type: string
-                        operating-system:
-                                description: Base OS to use (default `ubuntu-latest`)
-                                required: false
-                                default: ubuntu-latest
-                                type: string
-                        with-submodules:
-                                description: Whether to include submodules when checking out the repository (default `true`)
-                                required: false
-                                default: 'true'
-                                type: string
-                        working-directory:
-                                description: The working directory to run the commands in
-                                required: false
-                                default: .
-                                type: string
-                        checkout-depth:
-                                description: The depth of `actions/checkout` to fetch from (default `0`)
-                                required: false
-                                default: 0
-                                type: number
-                        checkout-ref:
-                                description: The branch reference `actions/checkout` will use to pull from (default `main`)
-                                required: false
-                                default: main
-                                type: string
-                secrets:
-                        BRSFTWORKS_TOKEN:
-                                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
-                                required: true
+    workflow_call:
+        inputs:
+            cancel-on-same:
+                description: Cancel the running workflow and stop the whole workflow from running if the versions are the same
+                required: false
+                default: false
+                type: boolean
+            project-name:
+                description: The name of the project
+                required: true
+                type: string
+            repository-owner:
+                description: The repository owner (default `bracketed`, can be customised)
+                required: false
+                default: bracketed
+                type: string
+            operating-system:
+                description: Base OS to use (default `ubuntu-latest`)
+                required: false
+                default: ubuntu-latest
+                type: string
+            with-submodules:
+                description: Whether to include submodules when checking out the repository (default `true`)
+                required: false
+                default: true
+                type: boolean
+            working-directory:
+                description: The working directory to run the commands in
+                required: false
+                default: .
+                type: string
+            checkout-depth:
+                description: The depth of `actions/checkout` to fetch from (default `0`)
+                required: false
+                default: 0
+                type: number
+            checkout-ref:
+                description: The branch reference `actions/checkout` will use to pull from (default `main`)
+                required: false
+                default: main
+                type: string
+        secrets:
+            BRSFTWORKS_TOKEN:
+                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
+                required: true
 
 concurrency:
-        group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.project-name }}|${{ inputs.workflow-runid }}|${{ inputs.checkout-depth }}|${{ inputs.checkout-ref }}
-        cancel-in-progress: true
+    group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.project-name }}|${{ inputs.checkout-depth }}|${{ inputs.checkout-ref }}
+    cancel-in-progress: true
 
 jobs:
-        check:
-                name: Check version for ${{ inputs.project-name }}
-                runs-on: ${{ inputs.operating-system }}
-                if: github.repository_owner == ${{ inputs.repository-owner }}
-                outputs:
-                        result: ${{ steps.version-check.outputs.result }}
-                steps:
-                        - name: Checkout Project
-                          uses: actions/checkout@v4
-                          with:
-                                  fetch-depth: ${{ inputs.checkout-depth }}
-                                  ref: ${{ inputs.checkout-ref }}
-                                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
-                                  submodules: ${{ inputs.with-submodules }}
+    check:
+        name: Check version for ${{ inputs.project-name }}
+        runs-on: ${{ inputs.operating-system }}
+        if: github.repository_owner == ${{ inputs.repository-owner }}
+        outputs:
+            result: ${{ steps.version-check.outputs.result }}
+            version: ${{ steps.version-check.outputs.version }}
+        steps:
+            - name: Checkout Project
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: ${{ inputs.checkout-depth }}
+                  ref: ${{ inputs.checkout-ref }}
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  submodules: ${{ inputs.with-submodules }}
 
-                        - name: Configure Git
-                          uses: Bracketed/Workflows/actions/git-configure@main
+            - name: Configure Git
+              uses: Bracketed/Workflows/actions/git-configure@main
 
-                        - name: Check for version change
-                          id: version-check
+            - name: Check for version change
+              id: version-check
 
-                          run: |
-                                  if [ ! -f package.json ]; then
-                                    echo "package.json not found."
-                                    echo "result=cancel" >> "$GITHUB_OUTPUT"
-                                    exit 0
-                                  fi
+              run: |
+                  if [ ! -f package.json ]; then
+                    echo "package.json not found."
+                    echo "result=null" >> "$GITHUB_OUTPUT"
+                    echo "version=null" >> "$GITHUB_OUTPUT"
+                    exit 0
+                  fi
 
-                                  OLD_VERSION=$(git show HEAD~1:package.json | jq -r .version)
-                                  NEW_VERSION=$(jq -r .version package.json)
+                  OLD_VERSION=$(git show HEAD~1:package.json | jq -r .version)
+                  NEW_VERSION=$(jq -r .version package.json)
 
-                                  echo "Old Version: $OLD_VERSION"
-                                  echo "New Version: $NEW_VERSION"
+                  echo "Old Version: $OLD_VERSION"
+                  echo "Current/New Version: $NEW_VERSION"
 
-                                  if [ "$OLD_VERSION" == "$NEW_VERSION" ]; then
-                                    echo "Version has not changed. Exiting..."
-                                    echo "result=cancel" >> "$GITHUB_OUTPUT"
-                                    exit 0
-                                  fi
+                  if [ "$OLD_VERSION" == "$NEW_VERSION" ]; then
+                    echo "Version has not changed. Exiting..."
+                    echo "result=same" >> "$GITHUB_OUTPUT"
+                    echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+                    exit 0
+                  fi
 
-        cancel:
-                needs: [check]
-                if: needs.check.outputs.result == 'cancel'
-                uses: Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main
-                name: Cancel workflows
-                permissions:
-                        actions: write
-                with:
-                        actions-id: ${{ inputs.workflow-runid }}
-                secrets: inherit
+                  echo "Version has changed! Exiting..."
+                  echo "New Version: $NEW_VERSION"
+                  echo "result=different" >> "$GITHUB_OUTPUT"
+                  echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+    cancel:
+        needs: [check]
+        if: ((inputs.cancel-on-same == true && needs.check.outputs.result == 'same') || needs.check.outputs.result == 'null')
+        uses: Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main
+        name: Cancel workflows
+        permissions:
+            actions: write
+        secrets: inherit

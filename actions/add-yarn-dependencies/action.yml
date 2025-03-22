@@ -1,40 +1,40 @@
 inputs:
-        immutable:
-                description: Use the `--immutable` flag when installing yarn dependencies
-                required: false
-                default: 'false'
-        flags:
-                description: Extra flags to be added onto the `npm install` command
-                required: false
-                default: ''
-        node-version:
-                description: The version of Node.js to use
-                required: false
-                default: '23'
+    immutable:
+        description: Use the `--immutable` flag when installing yarn dependencies
+        required: false
+        default: 'false'
+    flags:
+        description: Extra flags to be added onto the `npm install` command
+        required: false
+        default: ''
+    node-version:
+        description: The version of Node.js to use
+        required: false
+        default: '23'
 
 name: Install dependencies with Yarn
 description: Setup Node and install dependencies using Yarn.
 
 runs:
-        using: composite
-        steps:
-                - name: Set up swap space
-                  if: runner.os == 'Linux'
-                  uses: Bracketed/Workflows/actions/set-swap-space@main
-                  with:
-                          swap-size-gb: 10
+    using: composite
+    steps:
+        - name: Set up swap space
+          if: runner.os == 'Linux'
+          uses: Bracketed/Workflows/actions/set-swap-space@main
+          with:
+              swap-size-gb: 10
 
-                - name: Use Node.js v23
-                  uses: actions/setup-node@v4
-                  with:
-                          node-version: ${{ inputs.node-version }}
+        - name: Use Node.js v23
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ inputs.node-version }}
 
-                - name: Install dependencies (Immutable)
-                  if: ${{ inputs.immutable == 'true' }}
-                  shell: bash
-                  run: yarn install --immutable ${{ inputs.flags }}
+        - name: Install dependencies (Immutable)
+          if: ${{ inputs.immutable == 'true' }}
+          shell: bash
+          run: yarn install --immutable ${{ inputs.flags }}
 
-                - name: Install dependencies
-                  if: ${{ inputs.immutable == 'false' }}
-                  shell: bash
-                  run: yarn install ${{ inputs.flags }}
+        - name: Install dependencies
+          if: ${{ inputs.immutable == 'false' }}
+          shell: bash
+          run: yarn install ${{ inputs.flags }}

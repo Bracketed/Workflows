@@ -2,15 +2,15 @@ name: Configure Git CLI
 description: Configure the Git CLI with the correct values and objects for usage in a command line environment
 
 runs:
-        using: composite
-        steps:
-                - name: Configure Git
-                  shell: bash
-                  run: |
-                          git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git"
-                          git config --local user.email "${GITHUB_EMAIL}"
-                          git config --local user.name "${GITHUB_USER}"
-                  env:
-                          GITHUB_USER: github-actions[bot]
-                          GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-                          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    using: composite
+    steps:
+        - name: Configure Git
+          shell: bash
+          run: |
+              git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git"
+              git config --local user.email "${GITHUB_EMAIL}"
+              git config --local user.name "${GITHUB_USER}"
+          env:
+              GITHUB_USER: github-actions[bot]
+              GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

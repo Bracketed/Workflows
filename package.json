@@ -1,0 +1,27 @@
+{
+	"name": "@bracketed/actions-manager",
+	"packageManager": "yarn@4.7.0",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"type": "module",
+	"imports": {
+		"#root/*": "./dist/*.js"
+	},
+	"scripts": {
+		"start": "yarn node ./dist/index.js",
+		"test": "yarn compile && yarn start",
+		"compile": "yarn tsc"
+	},
+	"devDependencies": {
+		"@bracketed/typescript-config": "^4.4.0",
+		"@types/js-yaml": "^4",
+		"@types/node": "^22.13.11",
+		"prettier": "^3.5.3",
+		"tsx": "^4.19.3",
+		"typescript": "^5.8.2"
+	},
+	"dependencies": {
+		"@bracketed/logger": "^1.0.12",
+		"js-yaml": "^4.1.0"
+	}
+}
