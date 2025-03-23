@@ -26,6 +26,12 @@ jobs:
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
                   submodules: true
+            - name: Initialise Repository
+              run: git init
+
+            - name: Configure Git
+              uses: Bracketed/Workflows/actions/git-configure@main
+
             - name: Extract metadata
               id: meta
               uses: docker/metadata-action@v5
