@@ -52,7 +52,10 @@ const Data = Files.map((a) => {
 
 	if (isGithubWorkflow(a.content)) {
 		type = 'workflow';
-		inputs = (Object.values(a.content.on)[0] as WorkflowCall).inputs;
+		const Call: WorkflowCall = Object.values(a.content.on)[0];
+
+		if (!Call) inputs = {};
+		else inputs = Call.inputs;
 	}
 
 	return {
