@@ -46,6 +46,10 @@ jobs:
                   tags: ${{ steps.meta.outputs.tags }}
                   annotations: ${{ steps.meta.outputs.annotations }}
                   push: false
+                  context: .
+                  provenance: true
+                  secrets: |
+                      GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
             - name: Run Publish Action
               run: docker run --env GH_TOKEN=${{ secrets.GITHUB_TOKEN }} --rm ${{ env.IMAGE_NAME }}
