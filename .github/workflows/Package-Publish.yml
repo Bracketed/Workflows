@@ -69,7 +69,6 @@ jobs:
     check:
         uses: Bracketed/Workflows/.github/workflows/Version-Check.yml@main
         with:
-            workflow-runid: ${{ github.run_id }}
             project-name: ${{inputs.project-name}}
         secrets: inherit
 

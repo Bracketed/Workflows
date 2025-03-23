@@ -10,18 +10,29 @@
 	"scripts": {
 		"start": "yarn node ./dist/index.js",
 		"test": "yarn compile && yarn start",
-		"compile": "yarn tsc"
+		"compile": "yarn tsc",
+		"generate": "yarn node ./generate-types.ts"
 	},
 	"devDependencies": {
 		"@bracketed/typescript-config": "^4.4.0",
 		"@types/js-yaml": "^4",
 		"@types/node": "^22.13.11",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
 		"prettier": "^3.5.3",
 		"tsx": "^4.19.3",
 		"typescript": "^5.8.2"
 	},
 	"dependencies": {
 		"@bracketed/logger": "^1.0.12",
-		"js-yaml": "^4.1.0"
+		"@types/turndown": "^5.0.5",
+		"cheerio": "^1.0.0",
+		"dotenv": "^16.4.7",
+		"js-yaml": "^4.1.0",
+		"json-schema-to-typescript": "^15.0.4",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-markdown": "^10.1.0",
+		"turndown": "^7.2.0"
 	}
 }

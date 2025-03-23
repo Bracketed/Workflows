@@ -16,54 +16,113 @@
 console.clear();
 
 import { Logger } from '@bracketed/logger';
-import yaml from 'js-yaml';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import dotenv from 'dotenv';
+import promised from 'node:fs/promises';
+import { ActionsFinder } from './finder.js';
+import { WorkflowCall } from './types/wf_call.js';
+import { buildBaseMarkdown } from './utils/components/base.js';
+import { buildDateFooterMarkdown } from './utils/components/date-footer.js';
+import { buildFooterMarkdown } from './utils/components/footer.js';
+import { buildItemMarkdown } from './utils/components/item.js';
+import { getGitBranch } from './utils/getBranch.js';
+import { getLatestCommitUser } from './utils/getLatestCommitUser.js';
+import { getGitRepo } from './utils/getRepository.js';
+import { isGithubAction, isGithubWorkflow } from './utils/isType.js';
+import { buildURL } from './utils/parseURL.js';
+import { runCommand } from './utils/runCommand.js';
+import { stripFirst } from './utils/strip-first.js';
 
-const Console = new Logger({ prefix: 'ActionsReader' });
+dotenv.config();
 
-type Path = string | URL;
+const Console = new Logger({ depth: 6, prefix: 'Main' });
+const Finder = new ActionsFinder('../');
+const Files = await Finder.load();
 
-class ActionsFinder {
-	private readonly dir: string;
-	public readonly actions: Array<string>;
+const Data = Files.map((a) => {
+	let inputs;
+	let type;
 
-	constructor(dir: string) {
-		this.dir = dir;
-
-		this.actions = this.getFiles(path.resolve(import.meta.dirname, this.resolvePath(this.dir)), /\.ya?ml$/);
+	if (isGithubAction(a.content)) {
+		type = 'action';
+		inputs = a.content.inputs;
 	}
 
-	private resolvePath(path: Path): string {
-		if (typeof path === 'string') return path;
-		return fileURLToPath(path);
+	if (isGithubWorkflow(a.content)) {
+		type = 'workflow';
+		inputs = (Object.values(a.content.on)[0] as WorkflowCall).inputs;
 	}
 
-	private getFiles(dir: string, regex: RegExp): Array<string> {
-		let results: Array<string> = [];
+	return {
+		type: type,
+		file: stripFirst(a.relative).replace(/\\/g, '/'),
+		dir: stripFirst(a.directory).replace(/\\/g, '/'),
+		content: {
+			name: a.content.name,
+			url: buildURL(stripFirst(a.relative).replace(/\\/g, '/')),
+			description: a.content.description,
+			inputs: inputs ?? {},
+		},
+	};
+});
 
-		const list = fs.readdirSync(dir);
+const Workflows = Data.filter((a) => a.type === 'workflow')
+	.map((a) => ({
+		file: a.file,
+		dir: a.dir,
+		content: {
+			...a.content,
+			inputs: Object.entries(a.content.inputs).map(([key, value]) => ({
+				name: key,
+				values: value,
+			})),
+		},
+	}))
+	.map((a) => ({
+		...a,
+		markdown: buildItemMarkdown(a),
+	}));
 
-		list.forEach((file) => {
-			const filePath = path.join(dir, file);
-			const stat = fs.statSync(filePath);
+const Actions = Data.filter((a) => a.type === 'action')
+	.map((a) => ({
+		file: a.file,
+		dir: a.dir,
+		content: {
+			...a.content,
+			inputs: Object.entries(a.content.inputs).map(([key, value]) => ({
+				name: key,
+				values: value,
+			})),
+		},
+	}))
+	.map((a) => ({
+		...a,
+		markdown: buildItemMarkdown(a),
+	}));
 
-			if (stat && stat.isDirectory()) results = results.concat(this.getFiles(filePath, regex));
-			else if (regex.test(file)) results.push(filePath);
-		});
+Console.info('Building React & Markdown...');
+const Content: Array<string> = [
+	buildBaseMarkdown(),
+	'## Workflows:',
+	...Workflows.map((w) => w.markdown),
+	'\n\n',
+	'## Actions:',
+	...Actions.map((w) => w.markdown),
+	buildDateFooterMarkdown(),
+	buildFooterMarkdown(),
+];
 
-		return results;
-	}
-}
+Console.info('Build & Organised React Components!');
 
-const Actions = new ActionsFinder('../actions');
+await promised.writeFile('./README.md', Content.join('\n'), { encoding: 'utf8' });
+Console.info('Saved new documentation data!');
 
-const ActionsFiles = Actions.actions.map((p) => ({
-	full: path.join(path.dirname(fileURLToPath(import.meta.url)), p),
-	file: path.relative(path.dirname(fileURLToPath(import.meta.url)), p).replace(/\\/g, '/'),
-	dir: path.parse(path.relative(path.dirname(fileURLToPath(import.meta.url)), p).replace(/\\/g, '/')).dir,
-	content: yaml.load(path.join(path.dirname(fileURLToPath(import.meta.url)), p)),
-}));
+runCommand('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"');
+runCommand('git config --global user.name "github-actions[bot]"');
 
-Console.info(ActionsFiles);
+runCommand(
+	`git commit -a -m "Update README.md from Publish Container - ${getLatestCommitUser()} ${new Date().toLocaleDateString()}"`
+);
+
+runCommand(`git push https://x-access-token:${process.env.GH_TOKEN}@github.com/${getGitRepo()}.git ${getGitBranch()}`);
+
+process.exit(0);

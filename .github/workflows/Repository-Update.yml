@@ -1,0 +1,37 @@
+name: README.md Updater
+
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: '0 0 * * 0'
+    push:
+        paths:
+            - '**/*.ts'
+            - '**/*.tsx'
+            - '**/*.yml'
+            - '**/*.yaml'
+
+env:
+    IMAGE_NAME: bracketed/readme-updater-workflows
+
+jobs:
+    update:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: Extract metadata
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ env.IMAGE_NAME }}
+
+            - name: Build
+              uses: docker/build-push-action@v6
+              with:
+                  tags: ${{ steps.meta.outputs.tags }}
+                  annotations: ${{ steps.meta.outputs.annotations }}
+                  push: false
+
+            - name: Run Publish Action
+              run: docker run --env GH_TOKEN=${{ secrets.GITHUB_TOKEN }} --rm ${{ env.IMAGE_NAME }}

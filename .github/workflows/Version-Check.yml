@@ -10,8 +10,9 @@ on:
                 default: false
                 type: boolean
             project-name:
-                description: The name of the project
-                required: true
+                description: The name of the project (default is the repo owner + the repo name)
+                required: false
+                default: '@${{ github.repository }}'
                 type: string
             repository-owner:
                 description: The repository owner (default `bracketed`, can be customised)
@@ -39,9 +40,9 @@ on:
                 default: 0
                 type: number
             checkout-ref:
-                description: The branch reference `actions/checkout` will use to pull from (default `main`)
+                description: The branch reference `actions/checkout` will use to pull from (default is the same branch the workflow is running on)
                 required: false
-                default: main
+                default: ${{ github.ref }}
                 type: string
         secrets:
             BRSFTWORKS_TOKEN:
@@ -49,17 +50,19 @@ on:
                 required: true
 
 concurrency:
-    group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.project-name }}|${{ inputs.checkout-depth }}|${{ inputs.checkout-ref }}
+    group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.working-directory }}|${{ inputs.operating-system }}|${{ inputs.project-name }}|${{ inputs.checkout-depth }}|${{ inputs.checkout-ref }}|${{ inputs.cancel-on-same }}
     cancel-in-progress: true
 
 jobs:
     check:
         name: Check version for ${{ inputs.project-name }}
         runs-on: ${{ inputs.operating-system }}
+
         if: github.repository_owner == ${{ inputs.repository-owner }}
         outputs:
             result: ${{ steps.version-check.outputs.result }}
             version: ${{ steps.version-check.outputs.version }}
+
         steps:
             - name: Checkout Project
               uses: actions/checkout@v4

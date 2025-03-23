@@ -16,7 +16,8 @@
 		"declarationMap": false,
 		"incremental": false,
 		"listFiles": true,
-		"listEmittedFiles": true
+		"listEmittedFiles": true,
+		"jsx": "react"
 	},
-	"exclude": ["dist", "node_modules"]
+	"exclude": ["dist", "node_modules", "generate-types.ts"]
 }
