@@ -52,4 +52,4 @@ jobs:
                       GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
             - name: Run Publish Action
-              run: docker run --env GH_TOKEN=${{ secrets.GITHUB_TOKEN }} --rm ${{ env.IMAGE_NAME }}
+              run: docker run --env GH_TOKEN=${{ secrets.GITHUB_TOKEN }}:main --rm ${{ env.IMAGE_NAME }}
