@@ -35,7 +35,6 @@ RUN yarn generate
 RUN yarn compile
 
 FROM base AS runner
-COPY --chown=node:node --from=builder /usr/src/app/schemas/types schemas/types
 COPY --chown=node:node --from=builder /usr/src/app/dist dist
 COPY --chown=node:node --from=builder /usr/src/app/yarn.lock .
 
