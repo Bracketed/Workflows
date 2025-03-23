@@ -1,4 +1,5 @@
 name: README.md Updater
+description: Automatically updates the README.md file of this repository, this is NOT a reusable workflow
 
 on:
     workflow_dispatch:
@@ -20,6 +21,11 @@ jobs:
         permissions:
             contents: write
         steps:
+            - name: Checkout Project
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  submodules: true
             - name: Extract metadata
               id: meta
               uses: docker/metadata-action@v5
