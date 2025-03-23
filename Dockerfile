@@ -31,8 +31,8 @@ COPY --chown=node:node env.d.ts .
 RUN corepack enable
 RUN yarn set version stable
 RUN yarn install
-RUN yarn compile
 RUN yarn generate
+RUN yarn compile
 
 FROM base AS runner
 COPY --chown=node:node --from=builder /usr/src/app/schemas/types schemas/types
