@@ -1,5 +1,5 @@
-import { HttpsJsonSchemastoreOrgGithubActionJson } from 'schemas/types/actions.js';
-import { Workflow } from 'src/types/workflow.js';
+import { HttpsJsonSchemastoreOrgGithubActionJson } from '../../schemas/types/actions.js';
+import { Workflow } from '../types/workflow.js';
 
 export function isGithubAction(content: unknown): content is HttpsJsonSchemastoreOrgGithubActionJson {
 	return (

@@ -20,17 +20,20 @@ import dotenv from 'dotenv';
 import promised from 'node:fs/promises';
 import { ActionsFinder } from './finder.js';
 import { WorkflowCall } from './types/wf_call.js';
-import { buildBaseMarkdown } from './utils/components/base.js';
-import { buildDateFooterMarkdown } from './utils/components/date-footer.js';
-import { buildFooterMarkdown } from './utils/components/footer.js';
-import { buildItemMarkdown } from './utils/components/item.js';
-import { getGitBranch } from './utils/getBranch.js';
-import { getLatestCommitUser } from './utils/getLatestCommitUser.js';
-import { getGitRepo } from './utils/getRepository.js';
-import { isGithubAction, isGithubWorkflow } from './utils/isType.js';
-import { buildURL } from './utils/parseURL.js';
-import { runCommand } from './utils/runCommand.js';
-import { stripFirst } from './utils/strip-first.js';
+import {
+	buildBaseMarkdown,
+	buildDateFooterMarkdown,
+	buildFooterMarkdown,
+	buildItemMarkdown,
+	buildURL,
+	getGitBranch,
+	getGitRepo,
+	getLatestCommitUser,
+	isGithubAction,
+	isGithubWorkflow,
+	runCommand,
+	stripFirst,
+} from './utils/index.js';
 
 dotenv.config();
 

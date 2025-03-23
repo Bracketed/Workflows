@@ -2,8 +2,8 @@ import { Logger } from '@bracketed/logger';
 import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { FinderItem } from 'src/types/item.js';
 import TurndownService from 'turndown';
+import { FinderItem } from '../../types/item.js';
 
 const Component: React.FC<FinderItem> = (props: FinderItem) => (
 	<div>
