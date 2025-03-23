@@ -93,6 +93,8 @@ jobs:
 
             - name: Configure Git
               uses: Bracketed/Workflows/actions/git-configure@main
+              with:
+                  GITHUB_TOKEN: ${{ secrets.BRSFTWORKS_TOKEN }}
 
             - name: Build
               if: inputs.build

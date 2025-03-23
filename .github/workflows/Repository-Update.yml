@@ -31,6 +31,8 @@ jobs:
 
             - name: Configure Git
               uses: Bracketed/Workflows/actions/git-configure@main
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Extract metadata
               id: meta

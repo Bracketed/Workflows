@@ -1,6 +1,11 @@
 name: Configure Git CLI
 description: Configure the Git CLI with the correct values and objects for usage in a command line environment
 
+inputs:
+    GITHUB_TOKEN:
+        description: The Github Token to utilise when running this action
+        required: true
+
 runs:
     using: composite
     steps:
@@ -13,4 +18,4 @@ runs:
           env:
               GITHUB_USER: github-actions[bot]
               GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
