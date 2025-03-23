@@ -11,6 +11,7 @@ on:
             - '**/*.tsx'
             - '**/*.yml'
             - '**/*.yaml'
+            - 'Dockerfile'
 
 env:
     IMAGE_NAME: bracketed/readme-updater-workflows
