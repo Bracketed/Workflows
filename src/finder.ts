@@ -3,9 +3,9 @@ import yaml from 'js-yaml';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { HttpsJsonSchemastoreOrgGithubActionJson } from '../schemas/types/actions.js';
 import { ActionWorkflow } from './types/action-workflow.js';
 import { Path } from './types/path.js';
+import { HttpsJsonSchemastoreOrgGithubActionJson } from './types/schemas/actions.js';
 import { Workflow } from './types/workflow.js';
 import { stripFirst } from './utils/index.js';
 

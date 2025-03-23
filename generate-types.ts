@@ -34,10 +34,10 @@ const schemas = getFiles(path.resolve(import.meta.dirname, resolvePath('schemas'
 for (const schema of schemas) {
 	const type = await compileFromFile(schema);
 	const file = path.parse(path.relative(path.dirname(fileURLToPath(import.meta.url)), schema).replace(/\\/g, '/'));
-	const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), file.dir);
-	const final = path.join(dir, 'types', `${file.name}.d.ts`);
+	const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'src');
+	const final = path.join(dir, 'types', 'schemas', `${file.name}.d.ts`);
 
-	if (!fs.existsSync(path.join(dir, 'types'))) fs.mkdirSync(path.join(dir, 'types'));
+	if (!fs.existsSync(path.join(dir, 'types', 'schemas'))) fs.mkdirSync(path.join(dir, 'types', 'schemas'));
 
 	await promised.writeFile(final, type);
 	Console.info(`Compiled ${file.base} into ${file.name}.d.ts!`);
