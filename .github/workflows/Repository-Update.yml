@@ -47,7 +47,6 @@ jobs:
                   annotations: ${{ steps.meta.outputs.annotations }}
                   push: false
                   context: .
-                  provenance: true
                   secrets: |
                       GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
