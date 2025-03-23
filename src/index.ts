@@ -129,6 +129,6 @@ runCommand(
 	`git commit -a -m "Update README.md from Publish Container - ${getLatestCommitUser()} ${new Date().toLocaleDateString()}"`
 );
 
-runCommand(`git push https://x-access-token:${process.env.GH_TOKEN}@github.com/${getGitRepo()}.git ${getGitBranch()}`);
+runCommand(`git push https://x-access-token:${process.env.GH_TOKEN}@github.com/${getGitRepo()} ${getGitBranch()}`);
 
 process.exit(0);
