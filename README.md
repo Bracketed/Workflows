@@ -41,6 +41,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Workflows:
 #### [Node Package Publish](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
 
+Component link: `.github/workflows/Package-Publish.yml@main`
+
 - Publish a node package to the NPM registry
 
 **Inputs:**
@@ -85,10 +87,12 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [README.md Updater](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
 
-- Automatically updates the README.md file of this repository, this is NOT a reusable workflow
+Component link: `.github/workflows/Repository-Update.yml@main`
 
-**Inputs:**
+- Automatically updates the README.md file of this repository, this is NOT a reusable workflow
 #### [Package.json Version Check](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
+
+Component link: `.github/workflows/Version-Check.yml@main`
 
 - Check the package.json version for a new version or same version
 
@@ -126,6 +130,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Cancel Workflow](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
 
+Component link: `.github/workflows/Workflow-Cancel.yml@main`
+
 - Cancel a Github Actions Workflow with the gh CLI
 
 **Inputs:**
@@ -144,6 +150,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Actions:
 #### [Install dependencies with Yarn](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
 
+Component link: `actions/add-yarn-dependencies/action.yml@main`
+
 - Setup Node and install dependencies using Yarn.
 
 **Inputs:**
@@ -161,6 +169,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Configure Git CLI](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
 
+Component link: `actions/git-configure/action.yml@main`
+
 - Configure the Git CLI with the correct values and objects for usage in a command line environment
 
 **Inputs:**
@@ -169,6 +179,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `true`
     *   Type: `string`
 #### [Install dependencies with NPM](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
+
+Component link: `actions/install-npm-dependencies/action.yml@main`
 
 - Setup Node and install dependencies using NPM.
 
@@ -187,6 +199,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Set Memory Swap Space](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
 
+Component link: `actions/set-swap-space/action.yml@main`
+
 - Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
 
 **Inputs:**
@@ -197,7 +211,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[008b227](Bracketed/Workflows.git/commit/008b227137e28e3a59c6ddaf96a7abf1b80bd4cd)**_  
+_Last Edited by ninjaninja140 at 24/03/2025 in **[a38c0c6](Bracketed/Workflows.git/commit/a38c0c6a5fc2fa3adbeab598ba399e6be8fa7ccb)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
