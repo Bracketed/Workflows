@@ -28,7 +28,7 @@ RUN apt-get update -y && \
 
 RUN locale-gen en_GB.UTF-8
 RUN dpkg-reconfigure locales
-RUN update-locale LANG=en_GB.UTF-8
+RUN update-locale LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
 RUN source /etc/default/locale
 RUN locale
 RUN timedatectl set-timezone Europe/London
