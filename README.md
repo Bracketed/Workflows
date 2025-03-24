@@ -41,9 +41,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Workflows:
 #### [Node Package Publish](#.github/workflows/Package-Publish.yml)
 
-- Component link: `Bracketed/Workflows/.github/workflows/Package-Publish.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
-
-- Publish a node package to the NPM registry
+*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Package-Publish.yml)
+*   Description: Publish a node package to the NPM registry
 
 **Inputs:**
 
@@ -87,14 +86,12 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [README.md Updater](#.github/workflows/Repository-Update.yml)
 
-- Component link: `Bracketed/Workflows/.github/workflows/Repository-Update.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
-
-- Automatically updates the README.md file of this repository, this is NOT a reusable workflow
+*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Repository-Update.yml)
+*   Description: Automatically updates the README.md file of this repository, this is NOT a reusable workflow
 #### [Package.json Version Check](#.github/workflows/Version-Check.yml)
 
-- Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
-
-- Check the package.json version for a new version or same version
+*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Version-Check.yml)
+*   Description: Check the package.json version for a new version or same version
 
 **Inputs:**
 
@@ -130,9 +127,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
 
-- Component link: `Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
-
-- Cancel a Github Actions Workflow with the gh CLI
+*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Workflow-Cancel.yml)
+*   Description: Cancel a Github Actions Workflow with the gh CLI
 
 **Inputs:**
 
@@ -150,9 +146,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Actions:
 #### [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
 
-- Component link: `Bracketed/Workflows/actions/add-yarn-dependencies/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
-
-- Setup Node and install dependencies using Yarn.
+*   Component link: `Bracketed/Workflows/actions/add-yarn-dependencies@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/add-yarn-dependencies/action.yml)
+*   Description: Setup Node and install dependencies using Yarn.
 
 **Inputs:**
 
@@ -169,9 +164,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Configure Git CLI](#actions/git-configure/action.yml)
 
-- Component link: `Bracketed/Workflows/actions/git-configure/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
-
-- Configure the Git CLI with the correct values and objects for usage in a command line environment
+*   Component link: `Bracketed/Workflows/actions/git-configure@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/git-configure/action.yml)
+*   Description: Configure the Git CLI with the correct values and objects for usage in a command line environment
 
 **Inputs:**
 
@@ -180,9 +174,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
 
-- Component link: `Bracketed/Workflows/actions/install-npm-dependencies/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
-
-- Setup Node and install dependencies using NPM.
+*   Component link: `Bracketed/Workflows/actions/install-npm-dependencies@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/install-npm-dependencies/action.yml)
+*   Description: Setup Node and install dependencies using NPM.
 
 **Inputs:**
 
@@ -199,9 +192,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 
-- Component link: `Bracketed/Workflows/actions/set-swap-space/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
-
-- Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
+*   Component link: `Bracketed/Workflows/actions/set-swap-space@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/set-swap-space/action.yml)
+*   Description: Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
 
 **Inputs:**
 
@@ -211,7 +203,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[dee8e32](Bracketed/Workflows.git/commit/dee8e32cc98bc42bc10edcbf794da54db5ed3ef7)**_  
+_Last Edited by ninjaninja140 at 24/03/2025 in **[3afb447](Bracketed/Workflows.git/commit/3afb447e1737177d4061603c078edc02c7496277)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
