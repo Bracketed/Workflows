@@ -13,47 +13,50 @@
 			@author ninjaninja140
 			@name workflows-updater
 */
-console.clear();
-
 import { Logger } from '@bracketed/logger';
 import dotenv from 'dotenv';
 import promised from 'node:fs/promises';
-import { ActionsFinder } from './finder';
-import type { FinderItem } from './types/item';
-import type { WorkflowCall } from './types/wf_call';
 import {
 	buildBaseMarkdown,
 	buildDateFooterMarkdown,
 	buildFooterMarkdown,
+	buildGlossaryMarkdown,
 	buildItemMarkdown,
-	buildURL,
-	isGithubAction,
-	isGithubWorkflow,
-	stripFirst,
-} from './utils/index';
-
+} from './components';
+import { ActionsFinder } from './finder';
+import type { ActionCallInputs, ActionWorkflow, FileDataMap, FinderItem, WorkflowCall } from './types';
+import { buildURL, isGithubAction, isGithubWorkflow, stripFirst } from './utils';
 dotenv.config();
+console.clear();
 
-const Console = new Logger({ depth: 6, prefix: 'Main' });
-const Finder = new ActionsFinder('../');
-const Files = await Finder.load();
+const Console: Logger = new Logger({ depth: 6, prefix: 'Main' });
+const Finder: ActionsFinder = new ActionsFinder('../');
+const Files: Array<ActionWorkflow> = await Finder.load();
 
-const Data = Files.map((a) => {
+const Data: Array<FileDataMap> = Files.map((a) => {
 	let inputs;
 	let type;
 
 	if (isGithubAction(a.content)) {
 		type = 'action';
-		inputs = a.content.inputs;
+		const Call: ActionCallInputs | undefined = a.content.inputs;
+
+		if (!Call) inputs = {};
+		else inputs = Call;
 	}
 
 	if (isGithubWorkflow(a.content)) {
 		type = 'workflow';
-		const Call: WorkflowCall = Object.values(a.content.on)[0];
+		const Call: WorkflowCall | undefined = Object.values(a.content.on)[0] ?? undefined;
 
 		if (!Call) inputs = {};
 		else inputs = Call.inputs;
 	}
+
+	inputs = Object.entries(inputs as object).map(([key, value]) => ({
+		name: key,
+		values: value,
+	}));
 
 	return {
 		type: type,
@@ -63,48 +66,21 @@ const Data = Files.map((a) => {
 			name: a.content.name,
 			url: buildURL(stripFirst(a.relative).replace(/\\/g, '/')),
 			description: a.content.description,
-			inputs: inputs ?? {},
+			inputs: inputs ?? [],
 		},
 	};
-});
+}).map((a) => ({
+	...a,
+	markdown: buildItemMarkdown(a as FinderItem),
+}));
 
-const Workflows = Data.filter((a) => a.type === 'workflow')
-	.map((a) => ({
-		file: a.file,
-		dir: a.dir,
-		content: {
-			...a.content,
-			inputs: Object.entries(a.content.inputs).map(([key, value]) => ({
-				name: key,
-				values: value,
-			})),
-		},
-	}))
-	.map((a) => ({
-		...a,
-		markdown: buildItemMarkdown(a as FinderItem),
-	}));
-
-const Actions = Data.filter((a) => a.type === 'action')
-	.map((a) => ({
-		file: a.file,
-		dir: a.dir,
-		content: {
-			...a.content,
-			inputs: Object.entries(a.content.inputs).map(([key, value]) => ({
-				name: key,
-				values: value,
-			})),
-		},
-	}))
-	.map((a) => ({
-		...a,
-		markdown: buildItemMarkdown(a as FinderItem),
-	}));
+const Workflows = Data.filter((a) => a.type === 'workflow');
+const Actions = Data.filter((a) => a.type === 'action');
 
 Console.info('Building React & Markdown...');
 const Content: Array<string> = [
 	buildBaseMarkdown(),
+	buildGlossaryMarkdown({ name: 'Workflows', data: Workflows }, { name: 'Actions', data: Actions }),
 	'## Workflows:',
 	...Workflows.map((w) => w.markdown),
 	'\n\n',

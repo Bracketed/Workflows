@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import TurndownService from 'turndown';
-import type { FinderItem } from '../../types/item';
+import type { FinderItem } from '../types';
 
 const Component: React.FC<FinderItem> = (props: FinderItem) => (
 	<div>
@@ -13,8 +13,8 @@ const Component: React.FC<FinderItem> = (props: FinderItem) => (
 		<p>- {props.content.description}</p>
 		<b>Inputs:</b>
 		<ul>
-			{props.content.inputs.map((i) => (
-				<li>
+			{props.content.inputs.map((i, ind) => (
+				<li key={ind}>
 					<b>{i.name}</b>: {i.values.description}
 					<ul>
 						<li>Required: {i.values.required}</li>

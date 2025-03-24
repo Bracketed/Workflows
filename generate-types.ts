@@ -5,14 +5,6 @@ import promised from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-type Path = string | URL;
-const Console = new Logger({ prefix: 'TypeGenerator' });
-
-function resolvePath(path: Path): string {
-	if (typeof path === 'string') return path;
-	return fileURLToPath(path);
-}
-
 function getFiles(dir: string, regex: RegExp): Array<string> {
 	let results: Array<string> = [];
 
@@ -29,16 +21,24 @@ function getFiles(dir: string, regex: RegExp): Array<string> {
 	return results;
 }
 
-const schemas = getFiles(path.resolve(import.meta.dirname, resolvePath('schemas')), /\.json$/);
+const Console = new Logger({ prefix: 'TypeGenerator' });
+const schemas = getFiles(path.resolve(import.meta.dirname, 'schemas'), /\.json$/);
+const base = path.resolve(import.meta.dirname, 'src');
+if (!fs.existsSync(path.join(base, 'types', 'schemas'))) fs.mkdirSync(path.join(base, 'types', 'schemas'));
+const types = path.resolve(base, 'types', 'schemas');
+if (fs.existsSync(path.join(types, 'index.d.ts'))) fs.rmSync(path.join(types, 'index.d.ts'), { force: true });
 
 for (const schema of schemas) {
 	const type = await compileFromFile(schema);
 	const file = path.parse(path.relative(path.dirname(fileURLToPath(import.meta.url)), schema).replace(/\\/g, '/'));
-	const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'src');
-	const final = path.join(dir, 'types', 'schemas', `${file.name}.d.ts`);
-
-	if (!fs.existsSync(path.join(dir, 'types', 'schemas'))) fs.mkdirSync(path.join(dir, 'types', 'schemas'));
+	const final = path.join(types, `${file.name}.d.ts`);
 
 	await promised.writeFile(final, type);
 	Console.info(`Compiled ${file.base} into ${file.name}.d.ts!`);
 }
+
+const typings = getFiles(types, /\.d.ts$/).map((p) => `export * from './${path.parse(p).name.replace('.d', '')}';`);
+
+const final = path.join(import.meta.dirname, 'src', 'types', 'schemas', 'index.d.ts');
+await promised.writeFile(final, typings.join('\n'));
+Console.info('Built Index.d.ts file successfully!');
