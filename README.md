@@ -21,6 +21,21 @@ We permit usage of these by users outside of the Bracketed Softworks Organisatio
 A few of the actions or workflows used in this repository are forks of \`sapphiredev\`'s reusables.
 
 * * *
+### Glossary:
+
+#### Workflows:
+
+*   [Node Package Publish](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
+*   [README.md Updater](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
+*   [Package.json Version Check](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
+*   [Cancel Workflow](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
+
+#### Actions:
+
+*   [Install dependencies with Yarn](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
+*   [Configure Git CLI](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
+*   [Install dependencies with NPM](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
+*   [Set Memory Swap Space](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
 ## Workflows:
 #### [Node Package Publish](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
 
@@ -187,7 +202,7 @@ A few of the actions or workflows used in this repository are forks of \`sapphir
     *   Type: string
 * * *
 
-_Last Edited by ninjaninja140 at 3/24/2025 in **[97222c6](Bracketed/Workflows.git/commit/97222c690868bcea1b40a8785902e0b4f8d52982)**_
+_Last Edited by ninjaninja140 at 3/24/2025 in **[1d29707](Bracketed/Workflows.git/commit/1d29707f9b7787684828845b507000bb4d997084)**_
 * * *
 
 Contribution & Help
