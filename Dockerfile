@@ -54,6 +54,6 @@ RUN yarn node ./dist/index.mjs
 RUN git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 RUN git config --global user.name "github-actions[bot]"
 RUN git commit -a -m "Update README.md from Publish Container - $(git log -1 --pretty=format:"%an") $(date "+%m/%d/%Y")"
-RUN git push https://x-access-token:${GH_TOKEN}@github.com/$(git remote get-url origin | sed -E 's/.*github\.com[:\/]([^\/]+)\/([^\/]+).*/\1\/\2/').git $(git rev-parse --abbrev-ref HEAD)
+RUN git push https://x-access-token:${GH_TOKEN}@github.com/$(git remote get-url origin | sed -E 's/.*github\.com[:\/]([^\/]+)\/([^\/]+).*/\1\/\2/') $(git rev-parse --abbrev-ref HEAD)
 
 CMD ["exit 0"]
