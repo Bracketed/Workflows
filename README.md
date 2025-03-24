@@ -46,45 +46,43 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **project-name**: The name of the project
-    *   Required:
-    *   Default: ``
-    *   Type: string
+    *   Required: ``
+    *   Type: `string`
 *   **repository-owner**: The repository owner (default `bracketed`, can be customised)
-    *   Required:
+    *   Required: ``
     *   Default: `bracketed`
-    *   Type: string
+    *   Type: `string`
 *   **node-version**: The version of Node.js to use (default `23`)
-    *   Required:
+    *   Required: ``
     *   Default: `23`
-    *   Type: number
+    *   Type: `number`
 *   **operating-system**: The operating system to use (default `ubuntu-latest`)
-    *   Required:
+    *   Required: ``
     *   Default: `ubuntu-latest`
-    *   Type: string
+    *   Type: `string`
 *   **with-submodules**: Whether to include submodules when checking out the repository (default `false`)
-    *   Required:
+    *   Required: ``
     *   Default: `true`
-    *   Type: string
+    *   Type: `string`
 *   **working-directory**: The working directory to run the commands in
-    *   Required:
+    *   Required: ``
     *   Default: `.`
-    *   Type: string
+    *   Type: `string`
 *   **skip-automatic-bump**: Whether to skip the automatic bumping of the package version
-    *   Required:
+    *   Required: ``
     *   Default: ``
-    *   Type: boolean
+    *   Type: `boolean`
 *   **build**: Whether to run `yarn build` before publishing
-    *   Required:
+    *   Required: ``
     *   Default: ``
-    *   Type: boolean
+    *   Type: `boolean`
 *   **checkout-depth**: The depth of `actions/checkout` to fetch from (default `0`)
-    *   Required:
-    *   Default: `0`
-    *   Type: number
+    *   Required: ``
+    *   Type: `number`
 *   **checkout-ref**: The branch reference `actions/checkout` will use to pull from (default `main`)
-    *   Required:
+    *   Required: ``
     *   Default: `main`
-    *   Type: string
+    *   Type: `string`
 #### [README.md Updater](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
 
 - Automatically updates the README.md file of this repository, this is NOT a reusable workflow
@@ -97,37 +95,35 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **cancel-on-same**: Cancel the running workflow and stop the whole workflow from running if the versions are the same
-    *   Required:
-    *   Default: ``
-    *   Type: boolean
+    *   Required: ``
+    *   Type: `boolean`
 *   **project-name**: The name of the project (default is the repo owner + the repo name)
-    *   Required:
+    *   Required: ``
     *   Default: `@${{ github.repository }}`
-    *   Type: string
+    *   Type: `string`
 *   **repository-owner**: The repository owner (default `bracketed`, can be customised)
-    *   Required:
+    *   Required: ``
     *   Default: `bracketed`
-    *   Type: string
+    *   Type: `string`
 *   **operating-system**: Base OS to use (default `ubuntu-latest`)
-    *   Required:
+    *   Required: ``
     *   Default: `ubuntu-latest`
-    *   Type: string
+    *   Type: `string`
 *   **with-submodules**: Whether to include submodules when checking out the repository (default `true`)
-    *   Required:
+    *   Required: ``
     *   Default: ``
-    *   Type: boolean
+    *   Type: `boolean`
 *   **working-directory**: The working directory to run the commands in
-    *   Required:
+    *   Required: ``
     *   Default: `.`
-    *   Type: string
+    *   Type: `string`
 *   **checkout-depth**: The depth of `actions/checkout` to fetch from (default `0`)
-    *   Required:
-    *   Default: `0`
-    *   Type: number
+    *   Required: ``
+    *   Type: `number`
 *   **checkout-ref**: The branch reference `actions/checkout` will use to pull from (default is the same branch the workflow is running on)
-    *   Required:
+    *   Required: ``
     *   Default: `${{ github.ref }}`
-    *   Type: string
+    *   Type: `string`
 #### [Cancel Workflow](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
 
 - Cancel a Github Actions Workflow with the gh CLI
@@ -135,13 +131,13 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **repository-owner**: The repository owner (default `bracketed`, can be customised)
-    *   Required:
+    *   Required: ``
     *   Default: `bracketed`
-    *   Type: string
+    *   Type: `string`
 *   **operating-system**: Base OS to use (default `ubuntu-latest`)
-    *   Required:
+    *   Required: ``
     *   Default: `ubuntu-latest`
-    *   Type: string
+    *   Type: `string`
 
 
 
@@ -153,17 +149,16 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **immutable**: Use the `--immutable` flag when installing yarn dependencies
-    *   Required:
+    *   Required: ``
     *   Default: `false`
-    *   Type: string
+    *   Type: `string`
 *   **flags**: Extra flags to be added onto the `npm install` command
-    *   Required:
-    *   Default: ``
-    *   Type: string
+    *   Required: ``
+    *   Type: `string`
 *   **node-version**: The version of Node.js to use
-    *   Required:
+    *   Required: ``
     *   Default: `23`
-    *   Type: string
+    *   Type: `string`
 #### [Configure Git CLI](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
 
 - Configure the Git CLI with the correct values and objects for usage in a command line environment
@@ -171,9 +166,8 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **GITHUB_TOKEN**: The Github Token to utilise when running this action
-    *   Required:
-    *   Default: ``
-    *   Type: string
+    *   Required: ``
+    *   Type: `string`
 #### [Install dependencies with NPM](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
 
 - Setup Node and install dependencies using NPM.
@@ -181,17 +175,16 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **frozen**: Use the `--frozen-lockfile` flag when installing npm dependencies
-    *   Required:
+    *   Required: ``
     *   Default: `false`
-    *   Type: string
+    *   Type: `string`
 *   **flags**: Extra flags to be added onto the `npm install` command
-    *   Required:
-    *   Default: ``
-    *   Type: string
+    *   Required: ``
+    *   Type: `string`
 *   **node-version**: The version of Node.js to use
-    *   Required:
+    *   Required: ``
     *   Default: `23`
-    *   Type: string
+    *   Type: `string`
 #### [Set Memory Swap Space](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
 
 - Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
@@ -199,12 +192,12 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 **Inputs:**
 
 *   **swap-size**: Swap space to create, in Gigabytes.
-    *   Required:
+    *   Required: ``
     *   Default: `10`
-    *   Type: string
+    *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[f774039](Bracketed/Workflows.git/commit/f774039c6b1f4a2aac0e155fe3523683a74c0629)**_  
+_Last Edited by ninjaninja140 at 24/03/2025 in **[a900c82](Bracketed/Workflows.git/commit/a900c82d4322c87adb3cf11dc443b438229fce95)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
