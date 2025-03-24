@@ -27,11 +27,13 @@ RUN apt-get update -y && \
     apt-get install -y openssl git locales
 
 RUN locale-gen en_GB.UTF-8
-RUN dpkg-reconfigure locales
 RUN update-locale LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
-RUN source /etc/default/locale
-RUN locale
-RUN timedatectl set-timezone Europe/London
+RUN dpkg-reconfigure --frontend noninteractive locales
+RUN echo "LC_ALL=en_GB.UTF-8" >> /etc/environment 
+RUN echo "LANG=en_GB.UTF-8" >> /etc/environment
+
+RUN ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata
 
 FROM base AS builder
 COPY --chown=node:node tsconfig.json .
