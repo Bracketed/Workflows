@@ -1,4 +1,4 @@
-import { Input } from './input.js';
+import type { Input } from './input';
 
 export interface FinderItem {
 	file: string;

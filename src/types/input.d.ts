@@ -1,5 +1,5 @@
 export interface Input {
-	name: string;
+	name: string | undefined;
 	values: {
 		/**
 		 * A string description of the input parameter.

@@ -1,5 +1,5 @@
-import { getGitBranch } from './getBranch.js';
-import { getGitRepo } from './getRepository.js';
+import { getGitBranch } from './getBranch';
+import { getGitRepo } from './getRepository';
 
 export function buildURL(file: string) {
 	const branch = getGitBranch();

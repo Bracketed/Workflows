@@ -3,11 +3,11 @@ import yaml from 'js-yaml';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ActionWorkflow } from './types/action-workflow.js';
-import { Path } from './types/path.js';
-import { HttpsJsonSchemastoreOrgGithubActionJson } from './types/schemas/actions.js';
-import { Workflow } from './types/workflow.js';
-import { stripFirst } from './utils/index.js';
+import type { ActionWorkflow } from './types/action-workflow';
+import type { Path } from './types/path';
+import type { HttpsJsonSchemastoreOrgGithubActionJson } from './types/schemas/actions';
+import type { Workflow } from './types/workflow';
+import { stripFirst } from './utils/index';
 
 export class ActionsFinder {
 	private readonly dir: string;

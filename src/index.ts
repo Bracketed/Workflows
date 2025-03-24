@@ -18,22 +18,19 @@ console.clear();
 import { Logger } from '@bracketed/logger';
 import dotenv from 'dotenv';
 import promised from 'node:fs/promises';
-import { ActionsFinder } from './finder.js';
-import { WorkflowCall } from './types/wf_call.js';
+import { ActionsFinder } from './finder';
+import type { FinderItem } from './types/item';
+import type { WorkflowCall } from './types/wf_call';
 import {
 	buildBaseMarkdown,
 	buildDateFooterMarkdown,
 	buildFooterMarkdown,
 	buildItemMarkdown,
 	buildURL,
-	getGitBranch,
-	getGitRepo,
-	getLatestCommitUser,
 	isGithubAction,
 	isGithubWorkflow,
-	runCommand,
 	stripFirst,
-} from './utils/index.js';
+} from './utils/index';
 
 dotenv.config();
 
@@ -85,7 +82,7 @@ const Workflows = Data.filter((a) => a.type === 'workflow')
 	}))
 	.map((a) => ({
 		...a,
-		markdown: buildItemMarkdown(a),
+		markdown: buildItemMarkdown(a as FinderItem),
 	}));
 
 const Actions = Data.filter((a) => a.type === 'action')
@@ -102,7 +99,7 @@ const Actions = Data.filter((a) => a.type === 'action')
 	}))
 	.map((a) => ({
 		...a,
-		markdown: buildItemMarkdown(a),
+		markdown: buildItemMarkdown(a as FinderItem),
 	}));
 
 Console.info('Building React & Markdown...');
@@ -121,14 +118,5 @@ Console.info('Build & Organised React Components!');
 
 await promised.writeFile('./README.md', Content.join('\n'), { encoding: 'utf8' });
 Console.info('Saved new documentation data!');
-
-runCommand('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"');
-runCommand('git config --global user.name "github-actions[bot]"');
-
-runCommand(
-	`git commit -a -m "Update README.md from Publish Container - ${getLatestCommitUser()} ${new Date().toLocaleDateString()}"`
-);
-
-runCommand(`git push https://x-access-token:${process.env.GH_TOKEN}@github.com/${getGitRepo()} ${getGitBranch()}`);
 
 process.exit(0);

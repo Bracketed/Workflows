@@ -27,6 +27,7 @@ RUN apt-get update -y && \
 FROM base AS builder
 COPY --chown=node:node tsconfig.json .
 COPY --chown=node:node env.d.ts .
+COPY --chown=node:node tsup.config.ts .
 
 RUN corepack enable
 RUN yarn set version stable
@@ -35,8 +36,11 @@ RUN yarn generate
 RUN yarn compile
 
 FROM base AS runner
+COPY --chown=node:node --from=base /usr/src/app/src/ src/
 COPY --chown=node:node --from=builder /usr/src/app/dist dist
 COPY --chown=node:node --from=builder /usr/src/app/yarn.lock .
+COPY --chown=node:node --from=builder /usr/src/app/env.d.ts .
+COPY --chown=node:node --from=builder /usr/src/app/tsup.config.ts .
 
 RUN yarn set version stable
 RUN yarn install --immutable
@@ -44,4 +48,12 @@ RUN yarn workspaces focus --all --production
 RUN chown node:node /usr/src/app
 
 USER node
-CMD ["yarn", "node", "./dist/index.js"]
+STOPSIGNAL SIGINT
+RUN yarn node ./dist/index.mjs
+
+RUN git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+RUN git config --global user.name "github-actions[bot]"
+RUN git commit -a -m "Update README.md from Publish Container - $(git log -1 --pretty=format:"%an") $(date "+%m/%d/%Y")"
+RUN git push https://x-access-token:${GH_TOKEN}@github.com/$(git remote get-url origin | sed -E 's/.*github\.com[:\/]([^\/]+)\/([^\/]+).*/\1\/\2/').git $(git rev-parse --abbrev-ref HEAD)
+
+CMD ["exit 0"]

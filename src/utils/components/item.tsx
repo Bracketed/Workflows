@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import TurndownService from 'turndown';
-import { FinderItem } from '../../types/item.js';
+import type { FinderItem } from '../../types/item';
 
 const Component: React.FC<FinderItem> = (props: FinderItem) => (
 	<div>

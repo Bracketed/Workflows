@@ -3,10 +3,10 @@ import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import TurndownService from 'turndown';
-import { getLatestCommitFullHash } from '../getLatestCommitFullHash.js';
-import { getLatestCommitHash } from '../getLatestCommitHash.js';
-import { getLatestCommitUser } from '../getLatestCommitUser.js';
-import { getGitRepo } from '../getRepository.js';
+import { getLatestCommitFullHash } from '../getLatestCommitFullHash';
+import { getLatestCommitHash } from '../getLatestCommitHash';
+import { getLatestCommitUser } from '../getLatestCommitUser';
+import { getGitRepo } from '../getRepository';
 
 const Component: React.FC = () => (
 	<div>

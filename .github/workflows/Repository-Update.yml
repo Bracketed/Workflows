@@ -14,7 +14,7 @@ on:
             - 'Dockerfile'
 
 env:
-    IMAGE_NAME: bracketed/readme-updater-workflows
+    IMAGE_NAME: bracketed/actions-manager
 
 jobs:
     update:
