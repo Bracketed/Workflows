@@ -4,7 +4,7 @@ inputs:
         required: false
         default: 'false'
     flags:
-        description: Extra flags to be added onto the `npm install` command
+        description: Extra flags to be added onto the `yarn install` command
         required: false
         default: ''
     node-version:
