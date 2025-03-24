@@ -2,9 +2,9 @@ import { Logger } from '@bracketed/logger';
 import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { getGitBranch } from 'src/utils';
 import TurndownService from 'turndown';
 import type { FinderItem } from '../types';
+import { getGitBranch } from '../utils';
 
 const Component: React.FC<FinderItem> = (props: FinderItem) => (
 	<div>
