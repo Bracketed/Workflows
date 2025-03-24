@@ -20,7 +20,7 @@ We permit usage of these by users outside of the Bracketed Softworks Organisatio
 
   
 
-A few of the actions or workflows used in this repository are forks of `sapphiredev\`'s reusables.
+A few of the actions or workflows used in this repository are forks of `sapphiredev`'s reusables.
 
 * * *
 ### Glossary:
@@ -41,7 +41,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Workflows:
 #### [Node Package Publish](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
 
-\- Publish a node package to the NPM registry
+- Publish a node package to the NPM registry
 
 **Inputs:**
 
@@ -49,19 +49,19 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required:
     *   Default:
     *   Type: string
-*   **repository-owner**: The repository owner (default \`bracketed\`, can be customised)
+*   **repository-owner**: The repository owner (default `bracketed`, can be customised)
     *   Required:
     *   Default: bracketed
     *   Type: string
-*   **node-version**: The version of Node.js to use (default \`23\`)
+*   **node-version**: The version of Node.js to use (default `23`)
     *   Required:
     *   Default: 23
     *   Type: number
-*   **operating-system**: The operating system to use (default \`ubuntu-latest\`)
+*   **operating-system**: The operating system to use (default `ubuntu-latest`)
     *   Required:
     *   Default: ubuntu-latest
     *   Type: string
-*   **with-submodules**: Whether to include submodules when checking out the repository (default \`false\`)
+*   **with-submodules**: Whether to include submodules when checking out the repository (default `false`)
     *   Required:
     *   Default: true
     *   Type: string
@@ -73,26 +73,26 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required:
     *   Default:
     *   Type: boolean
-*   **build**: Whether to run \`yarn build\` before publishing
+*   **build**: Whether to run `yarn build` before publishing
     *   Required:
     *   Default:
     *   Type: boolean
-*   **checkout-depth**: The depth of \`actions/checkout\` to fetch from (default \`0\`)
+*   **checkout-depth**: The depth of `actions/checkout` to fetch from (default `0`)
     *   Required:
     *   Default: 0
     *   Type: number
-*   **checkout-ref**: The branch reference \`actions/checkout\` will use to pull from (default \`main\`)
+*   **checkout-ref**: The branch reference `actions/checkout` will use to pull from (default `main`)
     *   Required:
     *   Default: main
     *   Type: string
 #### [README.md Updater](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
 
-\- Automatically updates the README.md file of this repository, this is NOT a reusable workflow
+- Automatically updates the README.md file of this repository, this is NOT a reusable workflow
 
 **Inputs:**
 #### [Package.json Version Check](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
 
-\- Check the package.json version for a new version or same version
+- Check the package.json version for a new version or same version
 
 **Inputs:**
 
@@ -104,15 +104,15 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required:
     *   Default: @${{ github.repository }}
     *   Type: string
-*   **repository-owner**: The repository owner (default \`bracketed\`, can be customised)
+*   **repository-owner**: The repository owner (default `bracketed`, can be customised)
     *   Required:
     *   Default: bracketed
     *   Type: string
-*   **operating-system**: Base OS to use (default \`ubuntu-latest\`)
+*   **operating-system**: Base OS to use (default `ubuntu-latest`)
     *   Required:
     *   Default: ubuntu-latest
     *   Type: string
-*   **with-submodules**: Whether to include submodules when checking out the repository (default \`true\`)
+*   **with-submodules**: Whether to include submodules when checking out the repository (default `true`)
     *   Required:
     *   Default:
     *   Type: boolean
@@ -120,25 +120,25 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required:
     *   Default: .
     *   Type: string
-*   **checkout-depth**: The depth of \`actions/checkout\` to fetch from (default \`0\`)
+*   **checkout-depth**: The depth of `actions/checkout` to fetch from (default `0`)
     *   Required:
     *   Default: 0
     *   Type: number
-*   **checkout-ref**: The branch reference \`actions/checkout\` will use to pull from (default is the same branch the workflow is running on)
+*   **checkout-ref**: The branch reference `actions/checkout` will use to pull from (default is the same branch the workflow is running on)
     *   Required:
     *   Default: ${{ github.ref }}
     *   Type: string
 #### [Cancel Workflow](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
 
-\- Cancel a Github Actions Workflow with the gh CLI
+- Cancel a Github Actions Workflow with the gh CLI
 
 **Inputs:**
 
-*   **repository-owner**: The repository owner (default \`bracketed\`, can be customised)
+*   **repository-owner**: The repository owner (default `bracketed`, can be customised)
     *   Required:
     *   Default: bracketed
     *   Type: string
-*   **operating-system**: Base OS to use (default \`ubuntu-latest\`)
+*   **operating-system**: Base OS to use (default `ubuntu-latest`)
     *   Required:
     *   Default: ubuntu-latest
     *   Type: string
@@ -148,15 +148,15 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Actions:
 #### [Install dependencies with Yarn](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
 
-\- Setup Node and install dependencies using Yarn.
+- Setup Node and install dependencies using Yarn.
 
 **Inputs:**
 
-*   **immutable**: Use the \`--immutable\` flag when installing yarn dependencies
+*   **immutable**: Use the `--immutable` flag when installing yarn dependencies
     *   Required:
     *   Default: false
     *   Type: string
-*   **flags**: Extra flags to be added onto the \`npm install\` command
+*   **flags**: Extra flags to be added onto the `npm install` command
     *   Required:
     *   Default:
     *   Type: string
@@ -166,25 +166,25 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: string
 #### [Configure Git CLI](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
 
-\- Configure the Git CLI with the correct values and objects for usage in a command line environment
+- Configure the Git CLI with the correct values and objects for usage in a command line environment
 
 **Inputs:**
 
-*   **GITHUB\_TOKEN**: The Github Token to utilise when running this action
+*   **GITHUB_TOKEN**: The Github Token to utilise when running this action
     *   Required:
     *   Default:
     *   Type: string
 #### [Install dependencies with NPM](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
 
-\- Setup Node and install dependencies using NPM.
+- Setup Node and install dependencies using NPM.
 
 **Inputs:**
 
-*   **frozen**: Use the \`--frozen-lockfile\` flag when installing npm dependencies
+*   **frozen**: Use the `--frozen-lockfile` flag when installing npm dependencies
     *   Required:
     *   Default: false
     *   Type: string
-*   **flags**: Extra flags to be added onto the \`npm install\` command
+*   **flags**: Extra flags to be added onto the `npm install` command
     *   Required:
     *   Default:
     *   Type: string
@@ -194,7 +194,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: string
 #### [Set Memory Swap Space](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
 
-\- Add more swap space for memory in Gigabytes - By \`pierotofy/set-swap-space\`
+- Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
 
 **Inputs:**
 
@@ -204,7 +204,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: string
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[9133617](Bracketed/Workflows.git/commit/91336179aed032f544d760590b6accf2944707ab)**_
+_Last Edited by ninjaninja140 at 24/03/2025 in **[9e4cc3b](Bracketed/Workflows.git/commit/9e4cc3beca36be6583e441f25b0028afe5e8f7b4)**_
 * * *
 
 Contribution & Help
