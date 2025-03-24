@@ -130,3 +130,4 @@ dist
 .pnp.*
 
 src/types/schemas
+schemas
