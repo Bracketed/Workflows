@@ -24,22 +24,10 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y openssl git locales
-
-RUN sed -i '/en_GB.UTF-8/s/^# //g' /etc/locale.gen \
-    && locale-gen en_GB.UTF-8
-RUN update-locale LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
-RUN dpkg-reconfigure --frontend noninteractive locales
-RUN LC_ALL=en_GB.UTF-8
-RUN LANG=en_GB.UTF-8
-RUN locale
-
-RUN ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime \
-    && dpkg-reconfigure -f noninteractive tzdata
+    apt-get install -y openssl git
 
 FROM base AS builder
 COPY --chown=node:node tsconfig.json .
-COPY --chown=node:node env.d.ts .
 COPY --chown=node:node tsup.config.ts .
 
 RUN corepack enable

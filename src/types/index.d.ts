@@ -3,7 +3,6 @@ export * from './action-workflow';
 export * from './datamap';
 export * from './input';
 export * from './item';
-export * from './path';
 export * from './schemas';
 export * from './wf_call';
 export * from './wf_input';

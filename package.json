@@ -26,7 +26,6 @@
 	"dependencies": {
 		"@bracketed/logger": "^1.0.12",
 		"cheerio": "^1.0.0",
-		"dotenv": "^16.4.7",
 		"js-yaml": "^4.1.0",
 		"json-schema-to-typescript": "^15.0.4",
 		"react": "^19.0.0",

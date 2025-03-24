@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { ActionWorkflow, HttpsJsonSchemastoreOrgGithubActionJson, Path, Workflow } from './types';
+import type { ActionWorkflow, HttpsJsonSchemastoreOrgGithubActionJson, Workflow } from './types';
 import { stripFirst } from './utils';
 
 export class ActionsFinder {
@@ -34,7 +34,7 @@ export class ActionsFinder {
 		return content;
 	}
 
-	private resolvePath(path: Path): string {
+	private resolvePath(path: string | URL): string {
 		if (typeof path === 'string') return path;
 		return fileURLToPath(path);
 	}

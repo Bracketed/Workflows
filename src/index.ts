@@ -14,7 +14,6 @@
 			@name workflows-updater
 */
 import { Logger } from '@bracketed/logger';
-import dotenv from 'dotenv';
 import promised from 'node:fs/promises';
 import {
 	buildBaseMarkdown,
@@ -26,7 +25,6 @@ import {
 import { ActionsFinder } from './finder';
 import type { ActionCallInputs, ActionWorkflow, FileDataMap, FinderItem, WorkflowCall } from './types';
 import { buildURL, isGithubAction, isGithubWorkflow, stripFirst } from './utils';
-dotenv.config();
 console.clear();
 
 const Console: Logger = new Logger({ depth: 6, prefix: 'Main' });
