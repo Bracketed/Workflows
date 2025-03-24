@@ -40,6 +40,7 @@ COPY --chown=node:node --from=base /usr/src/app/src/ src/
 COPY --chown=node:node --from=builder /usr/src/app/dist dist
 COPY --chown=node:node --from=builder /usr/src/app/yarn.lock .
 COPY --chown=node:node --from=builder /usr/src/app/env.d.ts .
+COPY --chown=node:node --from=builder /usr/src/app/tsconfig.json .
 COPY --chown=node:node --from=builder /usr/src/app/tsup.config.ts .
 
 RUN yarn set version stable
@@ -56,4 +57,6 @@ RUN git config --global user.name "github-actions[bot]"
 RUN git commit -a -m "Update README.md from Publish Container - $(git log -1 --pretty=format:"%an") $(date "+%m/%d/%Y")"
 RUN git push https://x-access-token:${GH_TOKEN}@github.com/$(git remote get-url origin | sed -E 's/.*github\.com[:\/]([^\/]+)\/([^\/]+).*/\1\/\2/') $(git rev-parse --abbrev-ref HEAD)
 
-CMD ["exit 0"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
