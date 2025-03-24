@@ -17,9 +17,9 @@ const Component: React.FC<FinderItem> = (props: FinderItem) => (
 				<li key={ind}>
 					<b>{i.name}</b>: {i.values.description}
 					<ul>
-						<li>Required: {i.values.required}</li>
-						<li>Default: `{i.values.default ?? false}`</li>
-						<li>Type: {i.values.type ?? 'string'}</li>
+						<li>Required: `{i.values.required ?? 'false'}`</li>
+						{i.values.default ? <li>Default: `{i.values.default}`</li> : undefined}
+						<li>Type: `{i.values.type ?? 'string'}`</li>
 					</ul>
 				</li>
 			))}
