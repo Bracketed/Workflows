@@ -14,6 +14,8 @@ const Component: React.FC = () => (
 				<a href={`${getGitRepo()}/commit/${getLatestCommitFullHash()}`}>{getLatestCommitHash()}</a>
 			</b>
 		</i>
+		<br />- This repo automatically generates its README.md file, feel free to take a look or use the code in this
+		repo!
 	</div>
 );
 
