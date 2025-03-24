@@ -14,8 +14,8 @@ const Component: React.FC<{ data: Array<{ name: string; data: Array<FileDataMap>
 			<div key={ind}>
 				<h4>{d.name}:</h4>
 				<ul>
-					{d.data.map((d) => (
-						<li>
+					{d.data.map((d, id) => (
+						<li key={id}>
 							<a href={d.content.url}>{d.content.name}</a>
 						</li>
 					))}
@@ -28,7 +28,7 @@ const Component: React.FC<{ data: Array<{ name: string; data: Array<FileDataMap>
 export const buildGlossaryMarkdown = (...data: Array<{ name: string; data: Array<FileDataMap> }>) => {
 	const Console = new Logger({ prefix: 'React' });
 
-	Console.info(`Building React Component for Workflow/Actions via ${import.meta.filename}`);
+	Console.info(`Building React Component for Workflow/Actions with ${import.meta.filename}`);
 	const Turndown = new TurndownService();
 	const CheerioComponent = cheerio.load(ReactDOMServer.renderToStaticMarkup(<Component data={data} />));
 
