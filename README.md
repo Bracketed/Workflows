@@ -1,6 +1,8 @@
 @Workflows
 ==========
 
+[![README.md Updater](https://github.com/Bracketed/Workflows/actions/workflows/Repository-Update.yml/badge.svg)](https://github.com/Bracketed/Workflows/actions/workflows/Repository-Update.yml)
+
 * * *
 
 Utilities by Bracketed Softworks
@@ -202,7 +204,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: string
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[3043e1a](Bracketed/Workflows.git/commit/3043e1ace8f04c7e81aabb38b3ddf4ff25f85b12)**_
+_Last Edited by ninjaninja140 at 24/03/2025 in **[9133617](Bracketed/Workflows.git/commit/91336179aed032f544d760590b6accf2944707ab)**_
 * * *
 
 Contribution & Help
