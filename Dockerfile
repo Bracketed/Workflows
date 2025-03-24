@@ -20,6 +20,8 @@ COPY --chown=node:node actions/ actions/
 COPY --chown=node:node .git/ .git/
 COPY --chown=node:node .github/ .github/
 
+COPY entrypoint.sh /entrypoint.sh
+
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y openssl git
@@ -52,12 +54,13 @@ USER node
 STOPSIGNAL SIGINT
 RUN yarn node ./dist/index.mjs
 
+COPY entrypoint.sh entrypoint.sh
+
 RUN git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 RUN git config --global user.name "github-actions[bot]"
 RUN git commit -a -m "Update README.md from Publish Container - $(git log -1 --pretty=format:"%an") $(date "+%m/%d/%Y")"
 RUN git push https://x-access-token:${GH_TOKEN}@github.com/$(git remote get-url origin | sed -E 's/.*github\.com[:\/]([^\/]+)\/([^\/]+).*/\1\/\2/') $(git rev-parse --abbrev-ref HEAD)
 
 USER root
-COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
