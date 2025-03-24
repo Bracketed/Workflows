@@ -92,7 +92,7 @@ const Content: Array<string> = [
 
 Console.info('Build & Organised React Components!');
 
-await promised.writeFile('./README.md', Content.join('\n'), { encoding: 'utf8' });
+await promised.writeFile('./README.md', Content.join('\n').replace('\\', ''), { encoding: 'utf8' });
 Console.info('Saved new documentation data!');
 
 process.exit(0);

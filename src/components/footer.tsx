@@ -8,9 +8,11 @@ const Component: React.FC = () => (
 	<div>
 		<hr />
 		<h1>Contribution & Help</h1>
-		Feel free to contribute to this project, join our [discord](https://discord.com/invite/JZ4939cvMT) and help us
-		with future developments of Project Bracketed & Packages by Bracketed Softworks. Please also notify us of errors
-		within our projects as we may not be aware of them at the time.
+		Feel free to contribute to this project, join our <a href='https://discord.com/invite/JZ4949cvMT'>
+			discord
+		</a>{' '}
+		and help us with future developments of Project Bracketed & Packages by Bracketed Softworks. Please also notify
+		us of errors within our projects as we may not be aware of them at the time.
 		<br />
 		<div style={{ fontWeight: 'bold' }}>
 			<h2>Thanks for using our content!</h2>

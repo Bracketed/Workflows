@@ -22,6 +22,10 @@ COPY --chown=node:node .github/ .github/
 
 COPY entrypoint.sh /entrypoint.sh
 
+RUN update-locale LANG=en_GB.UTF-8
+RUN source /etc/default/locale
+RUN locale
+RUN timedatectl set-timezone Europe/London
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y openssl git
@@ -58,7 +62,7 @@ COPY entrypoint.sh entrypoint.sh
 
 RUN git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 RUN git config --global user.name "github-actions[bot]"
-RUN git commit -a -m "Update README.md from Publish Container - $(git log -1 --pretty=format:"%an") $(date "+%m/%d/%Y")"
+RUN git commit -a -m "Update README.md from Publish Container - $(git log -1 --pretty=format:"%an") $(date "+%d/+%m/+%Y")"
 RUN git push https://x-access-token:${GH_TOKEN}@github.com/$(git remote get-url origin | sed -E 's/.*github\.com[:\/]([^\/]+)\/([^\/]+).*/\1\/\2/') $(git rev-parse --abbrev-ref HEAD)
 
 USER root
