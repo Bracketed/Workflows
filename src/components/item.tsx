@@ -8,14 +8,16 @@ import { getGitBranch, getGitRepo } from '../utils';
 
 const Component: React.FC<FinderItem> = (props: FinderItem) => (
 	<div>
-		<h4>
+		<h4 id={props.file}>
 			<a href={`#${props.file}`}>{props.content.name}</a>
 		</h4>
-		<p>
-			- Component link: `{getGitRepo().replace('.git', '')}/{props.file}@{getGitBranch()}`{' '}
-			<a href={props.content.url}>[Source]</a>
-		</p>
-		<p>- {props.content.description}</p>
+		<ul>
+			<li>
+				Component link: `{getGitRepo().replace('.git', '')}/{props.type === 'workflow' ? props.file : props.dir}
+				@{getGitBranch()}` <a href={props.content.url}>[Source]</a>
+			</li>
+			<li>Description: {props.content.description}</li>
+		</ul>
 		{props.content.inputs.length !== 0 ? (
 			<div>
 				<b>Inputs:</b>

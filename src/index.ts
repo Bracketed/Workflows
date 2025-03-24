@@ -23,7 +23,7 @@ import {
 	buildItemMarkdown,
 } from './components';
 import { ActionsFinder } from './finder';
-import type { ActionCallInputs, ActionWorkflow, FileDataMap, FinderItem, WorkflowCall } from './types';
+import type { ActionCallInputs, ActionWorkflow, FileDataMap, WorkflowCall } from './types';
 import { buildURL, isGithubAction, isGithubWorkflow, stripFirst } from './utils';
 console.clear();
 
@@ -61,7 +61,7 @@ const Data: Array<FileDataMap> = Files.map((a) => {
 		file: stripFirst(a.relative).replace(/\\/g, '/'),
 		dir: stripFirst(a.directory).replace(/\\/g, '/'),
 		content: {
-			name: a.content.name,
+			name: a.content.name as string,
 			url: buildURL(stripFirst(a.relative).replace(/\\/g, '/')),
 			description: a.content.description,
 			inputs: inputs ?? [],
@@ -69,7 +69,7 @@ const Data: Array<FileDataMap> = Files.map((a) => {
 	};
 }).map((a) => ({
 	...a,
-	markdown: buildItemMarkdown(a as FinderItem),
+	markdown: buildItemMarkdown(a),
 }));
 
 const Workflows = Data.filter((a) => a.type === 'workflow');

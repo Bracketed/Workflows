@@ -4,7 +4,7 @@ export interface FileDataMap {
 	file: string;
 	dir: string;
 	content: {
-		name?: string;
+		name: string;
 		url: string;
 		description: string;
 		inputs: Array<{
