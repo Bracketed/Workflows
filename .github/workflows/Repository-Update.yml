@@ -12,6 +12,7 @@ on:
             - '**/*.yml'
             - '**/*.yaml'
             - 'Dockerfile'
+            - '**/*.sh'
 
 env:
     IMAGE_NAME: bracketed/actions-manager
