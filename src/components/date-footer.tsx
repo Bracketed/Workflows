@@ -9,7 +9,7 @@ const Component: React.FC = () => (
 	<div>
 		<hr />
 		<i>
-			Last Edited by {getLatestCommitUser()} at {new Date().toLocaleDateString()} in{' '}
+			Last Edited by {getLatestCommitUser()} at {new Date().toLocaleDateString('en-GB')} in{' '}
 			<b>
 				<a href={`${getGitRepo()}/commit/${getLatestCommitFullHash()}`}>{getLatestCommitHash()}</a>
 			</b>
