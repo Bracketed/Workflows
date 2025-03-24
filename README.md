@@ -27,21 +27,21 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 
 #### Workflows:
 
-*   [Node Package Publish](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
-*   [README.md Updater](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
-*   [Package.json Version Check](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
-*   [Cancel Workflow](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
+*   [Node Package Publish](#.github/workflows/Package-Publish.yml)
+*   [README.md Updater](#.github/workflows/Repository-Update.yml)
+*   [Package.json Version Check](#.github/workflows/Version-Check.yml)
+*   [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
 
 #### Actions:
 
-*   [Install dependencies with Yarn](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
-*   [Configure Git CLI](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
-*   [Install dependencies with NPM](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
-*   [Set Memory Swap Space](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
+*   [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
+*   [Configure Git CLI](#actions/git-configure/action.yml)
+*   [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
+*   [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 ## Workflows:
-#### [Node Package Publish](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
+#### [Node Package Publish](#.github/workflows/Package-Publish.yml)
 
-Component link: `.github/workflows/Package-Publish.yml@main`
+- Component link: `Bracketed/Workflows/.github/workflows/Package-Publish.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Package-Publish.yml)
 
 - Publish a node package to the NPM registry
 
@@ -85,14 +85,14 @@ Component link: `.github/workflows/Package-Publish.yml@main`
     *   Required: `false`
     *   Default: `main`
     *   Type: `string`
-#### [README.md Updater](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
+#### [README.md Updater](#.github/workflows/Repository-Update.yml)
 
-Component link: `.github/workflows/Repository-Update.yml@main`
+- Component link: `Bracketed/Workflows/.github/workflows/Repository-Update.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Repository-Update.yml)
 
 - Automatically updates the README.md file of this repository, this is NOT a reusable workflow
-#### [Package.json Version Check](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
+#### [Package.json Version Check](#.github/workflows/Version-Check.yml)
 
-Component link: `.github/workflows/Version-Check.yml@main`
+- Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Version-Check.yml)
 
 - Check the package.json version for a new version or same version
 
@@ -128,9 +128,9 @@ Component link: `.github/workflows/Version-Check.yml@main`
     *   Required: `false`
     *   Default: `${{ github.ref }}`
     *   Type: `string`
-#### [Cancel Workflow](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
+#### [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
 
-Component link: `.github/workflows/Workflow-Cancel.yml@main`
+- Component link: `Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/.github/workflows/Workflow-Cancel.yml)
 
 - Cancel a Github Actions Workflow with the gh CLI
 
@@ -148,9 +148,9 @@ Component link: `.github/workflows/Workflow-Cancel.yml@main`
 
 
 ## Actions:
-#### [Install dependencies with Yarn](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
+#### [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
 
-Component link: `actions/add-yarn-dependencies/action.yml@main`
+- Component link: `Bracketed/Workflows/actions/add-yarn-dependencies/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/add-yarn-dependencies/action.yml)
 
 - Setup Node and install dependencies using Yarn.
 
@@ -167,9 +167,9 @@ Component link: `actions/add-yarn-dependencies/action.yml@main`
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
-#### [Configure Git CLI](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
+#### [Configure Git CLI](#actions/git-configure/action.yml)
 
-Component link: `actions/git-configure/action.yml@main`
+- Component link: `Bracketed/Workflows/actions/git-configure/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/git-configure/action.yml)
 
 - Configure the Git CLI with the correct values and objects for usage in a command line environment
 
@@ -178,9 +178,9 @@ Component link: `actions/git-configure/action.yml@main`
 *   **GITHUB_TOKEN**: The Github Token to utilise when running this action
     *   Required: `true`
     *   Type: `string`
-#### [Install dependencies with NPM](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
+#### [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
 
-Component link: `actions/install-npm-dependencies/action.yml@main`
+- Component link: `Bracketed/Workflows/actions/install-npm-dependencies/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/install-npm-dependencies/action.yml)
 
 - Setup Node and install dependencies using NPM.
 
@@ -197,9 +197,9 @@ Component link: `actions/install-npm-dependencies/action.yml@main`
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
-#### [Set Memory Swap Space](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
+#### [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 
-Component link: `actions/set-swap-space/action.yml@main`
+- Component link: `Bracketed/Workflows/actions/set-swap-space/action.yml@main` [[Source]](https://github.com/Bracketed/Workflows.git/blob/main/actions/set-swap-space/action.yml)
 
 - Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
 
@@ -211,7 +211,7 @@ Component link: `actions/set-swap-space/action.yml@main`
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[a38c0c6](Bracketed/Workflows.git/commit/a38c0c6a5fc2fa3adbeab598ba399e6be8fa7ccb)**_  
+_Last Edited by ninjaninja140 at 24/03/2025 in **[dee8e32](Bracketed/Workflows.git/commit/dee8e32cc98bc42bc10edcbf794da54db5ed3ef7)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
