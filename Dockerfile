@@ -16,15 +16,18 @@ COPY --chown=node:node entrypoint.sh .
 
 COPY --chown=node:node .yarn/ .yarn/
 COPY --chown=node:node src/ src/
-COPY --chown=node:node schemas/ schemas/
 COPY --chown=node:node actions/ actions/
 COPY --chown=node:node .git/ .git/
 COPY --chown=node:node .github/ .github/
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y openssl git
+    apt-get install -y openssl git curl
 
+RUN mkdir schemas
+RUN chown node:node schemas
+RUN curl https://json.schemastore.org/github-action.json -o schemas/actions.json
+RUN curl https://json.schemastore.org/github-workflow.json -o schemas/workflows.json
 RUN chmod +x ./entrypoint.sh
 
 FROM base AS builder
