@@ -24,7 +24,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y openssl git locales timedatectl
+    apt-get install -y openssl git locales
 
 RUN update-locale LANG=en_GB.UTF-8
 RUN source /etc/default/locale
