@@ -7,6 +7,12 @@ import TurndownService from 'turndown';
 const Component: React.FC = () => (
 	<div>
 		<h1>@Workflows</h1>
+		<a href='https://github.com/Bracketed/Workflows/actions/workflows/Repository-Update.yml'>
+			<img
+				src='https://github.com/Bracketed/Workflows/actions/workflows/Repository-Update.yml/badge.svg'
+				alt='README.md Updater'
+			/>
+		</a>
 		<hr />
 		<h2>Utilities by Bracketed Softworks</h2>
 		<br />
