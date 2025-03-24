@@ -42,6 +42,7 @@ export const buildItemMarkdown = (item: FinderItem) => {
 	const Console = new Logger({ prefix: 'React' });
 
 	Console.info(`Building React Component for ${item.file} (${item.type}) with ${import.meta.filename}`);
+	Console.info(`Component info for ${item.file} (${item.type}):`, item);
 	const Turndown = new TurndownService();
 	const CheerioComponent = cheerio.load(
 		ReactDOMServer.renderToStaticMarkup(
