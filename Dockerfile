@@ -22,13 +22,14 @@ COPY --chown=node:node .github/ .github/
 
 COPY entrypoint.sh /entrypoint.sh
 
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y openssl git locales timedatectl
+
 RUN update-locale LANG=en_GB.UTF-8
 RUN source /etc/default/locale
 RUN locale
 RUN timedatectl set-timezone Europe/London
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y openssl git
 
 FROM base AS builder
 COPY --chown=node:node tsconfig.json .
