@@ -16,7 +16,7 @@ const Component: React.FC<{ data: Array<{ name: string; data: Array<FileDataMap>
 				<ul>
 					{d.data.map((d, id) => (
 						<li key={id}>
-							<a href={d.content.url}>{d.content.name}</a>
+							<a href={`#${d.file}`}>{d.content.name}</a>
 						</li>
 					))}
 				</ul>
