@@ -40,7 +40,6 @@ FROM base AS runner
 COPY --chown=node:node --from=base /usr/src/app/src/ src/
 COPY --chown=node:node --from=builder /usr/src/app/dist dist
 COPY --chown=node:node --from=builder /usr/src/app/yarn.lock .
-COPY --chown=node:node --from=builder /usr/src/app/env.d.ts .
 COPY --chown=node:node --from=builder /usr/src/app/tsconfig.json .
 COPY --chown=node:node --from=builder /usr/src/app/tsup.config.ts .
 
