@@ -13,7 +13,7 @@ const Component: React.FC<FinderItem> = (props: FinderItem) => (
 		</h4>
 		<ul>
 			<li>
-				Component link: `{getGitRepo().replace('.git', '')}/{props.type !== 'workflow' ? props.dir : props.file}
+				Component link: `{getGitRepo().replace('.git', '')}/{props.type === 'workflow' ? props.file : props.dir}
 				@{getGitBranch()}` <a href={props.content.url}>[Source]</a>
 			</li>
 			<li>Description: {props.content.description}</li>
@@ -50,6 +50,7 @@ export const buildItemMarkdown = (item: FinderItem) => {
 				content={item.content}
 				file={item.file}
 				dir={item.dir}
+				type={item.type}
 			/>
 		)
 	);
