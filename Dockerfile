@@ -12,6 +12,7 @@ COPY --chown=node:node .markdownlint.jsonc .
 COPY --chown=node:node .prettierrc .
 COPY --chown=node:node Dockerfile .
 COPY --chown=node:node generate-types.ts .
+COPY --chown=node:node entrypoint.sh .
 
 COPY --chown=node:node .yarn/ .yarn/
 COPY --chown=node:node src/ src/
@@ -20,11 +21,11 @@ COPY --chown=node:node actions/ actions/
 COPY --chown=node:node .git/ .git/
 COPY --chown=node:node .github/ .github/
 
-COPY entrypoint.sh /entrypoint.sh
-
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y openssl git
+
+RUN chmod +x ./entrypoint.sh
 
 FROM base AS builder
 COPY --chown=node:node tsconfig.json .
@@ -50,7 +51,4 @@ RUN chown node:node /usr/src/app
 
 USER node
 STOPSIGNAL SIGINT
-COPY entrypoint.sh entrypoint.sh
-USER root
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
