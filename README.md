@@ -18,7 +18,7 @@ We permit usage of these by users outside of the Bracketed Softworks Organisatio
 
   
 
-A few of the actions or workflows used in this repository are forks of \`sapphiredev\`'s reusables.
+A few of the actions or workflows used in this repository are forks of `sapphiredev\`'s reusables.
 
 * * *
 ### Glossary:
@@ -202,13 +202,13 @@ A few of the actions or workflows used in this repository are forks of \`sapphir
     *   Type: string
 * * *
 
-_Last Edited by ninjaninja140 at 3/24/2025 in **[1d29707](Bracketed/Workflows.git/commit/1d29707f9b7787684828845b507000bb4d997084)**_
+_Last Edited by ninjaninja140 at 3/24/2025 in **[243ba94](Bracketed/Workflows.git/commit/243ba946ad6a170754fa0e86679ad05abe1d8af1)**_
 * * *
 
 Contribution & Help
 ===================
 
-Feel free to contribute to this project, join our \[discord\](https://discord.com/invite/JZ4939cvMT) and help us with future developments of Project Bracketed & Packages by Bracketed Softworks. Please also notify us of errors within our projects as we may not be aware of them at the time.  
+Feel free to contribute to this project, join our [discord](https://discord.com/invite/JZ4949cvMT) and help us with future developments of Project Bracketed & Packages by Bracketed Softworks. Please also notify us of errors within our projects as we may not be aware of them at the time.  
 
 Thanks for using our content!
 -----------------------------
