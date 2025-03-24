@@ -41,7 +41,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Workflows:
 #### [Node Package Publish](#.github/workflows/Package-Publish.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Package-Publish.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Package-Publish.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Package-Publish.yml)
 *   Description: Publish a node package to the NPM registry
 
 **Inputs:**
@@ -86,11 +86,11 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [README.md Updater](#.github/workflows/Repository-Update.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Repository-Update.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Repository-Update.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Repository-Update.yml)
 *   Description: Automatically updates the README.md file of this repository, this is NOT a reusable workflow
 #### [Package.json Version Check](#.github/workflows/Version-Check.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Version-Check.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Version-Check.yml)
 *   Description: Check the package.json version for a new version or same version
 
 **Inputs:**
@@ -127,7 +127,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Workflow-Cancel.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Workflow-Cancel.yml)
 *   Description: Cancel a Github Actions Workflow with the gh CLI
 
 **Inputs:**
@@ -203,7 +203,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 24/03/2025 in **[22a5d37](Bracketed/Workflows.git/commit/22a5d37cb28258d197f8e28cdc5009ff3c0d06db)**_  
+_Last Edited by ninjaninja140 at 24/03/2025 in **[20adba9](Bracketed/Workflows.git/commit/20adba9a2582acbfff69fe53447bbaf31bfc4adf)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
