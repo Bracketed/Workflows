@@ -157,7 +157,7 @@ jobs:
               run: |
                   echo "url=${{ steps.build.outputs.artifact-url }}" >> $GITHUB_OUTPUT
                   echo "sha=${{ steps.build.outputs.artifact-digest }}" >> $GITHUB_OUTPUT
-                  echo "small-sha${{ steps.build.outputs.artifact-digest }}:0:7" >> $GITHUB_OUTPUT
+                  echo "small-sha=$(echo ${{ steps.build.outputs.artifact-digest }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
     summary:
         name: Generate final build summary info
