@@ -92,6 +92,9 @@ jobs:
             - name: Start Install & Build Timer
               run: echo "START_TIME=$SECONDS" >> $GITHUB_ENV
 
+            - name: Initialise Windows Build Support
+              uses: ilammy/msvc-dev-cmd@v1
+
             - name: Install LuaJIT
               uses: leafo/gh-actions-lua@v11
               with:
