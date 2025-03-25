@@ -154,6 +154,9 @@ jobs:
         needs: [build]
         if: github.repository_owner == ${{ inputs.repository-owner }}
         steps:
+            - name: Checkout Directory for Execution
+              uses: actions/checkout@v4
+
             - name: Get Build Artifact Data
               uses: Bracketed/Workflows/actions/fetch-artifact@main
               id: build-data
@@ -168,6 +171,7 @@ jobs:
                   name: ${{ needs.build.outputs.build-label }}-LOG
 
             - name: Generate Build and Runtime Summary
+              working-directory: ${{ github.workspace }}
               run: |
                   echo "<h2>Rojo Build summary</h2>" >> $GITHUB_STEP_SUMMARY
                   echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>" >> $GITHUB_STEP_SUMMARY
