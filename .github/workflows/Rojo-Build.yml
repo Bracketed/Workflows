@@ -104,14 +104,14 @@ jobs:
         if: github.repository_owner == ${{ inputs.repository-owner }}
         outputs:
             build-time: ${{ steps.build-time.outputs.duration }}
-            build-label: ${{ steps.prebuild-data.outputs.label }}
-            build-file: ${{ steps.prebuild-data.outputs.file }}
-            build-url: ${{ steps.postbuild-data.outputs.url }}
-            build-sha: ${{ steps.postbuild-data.outputs.sha }}
-            build-sha-small: ${{ steps.postbuild-data.outputs.small-sha }}
-            build-name: ${{ steps.prebuild-data.outputs.name }}
-            file-count: ${{ steps.prebuild-data.outputs.count }}
-            build-logs-url: ${{ steps.postbuild-data.outputs.logs-url }}
+            build-label: ${{ steps.pre-build-data.outputs.label }}
+            build-file: ${{ steps.pre-build-data.outputs.file }}
+            build-url: ${{ steps.post-build-data.outputs.url }}
+            build-sha: ${{ steps.post-build-data.outputs.sha }}
+            build-sha-small: ${{ steps.post-build-data.outputs.small-sha }}
+            build-name: ${{ steps.pre-build-data.outputs.name }}
+            file-count: ${{ steps.pre-build-data.outputs.count }}
+            build-logs-url: ${{ steps.post-build-data.outputs.logs-url }}
 
         steps:
             - name: Checkout Project
@@ -124,7 +124,7 @@ jobs:
 
             - name: Export Build Data to Outputs and Environment
               working-directory: ${{ inputs.project-context }}
-              id: prebuild-data
+              id: pre-build-data
               run: |
                   echo "file=${{ inputs.project-output }}.${{ inputs.project-output-type }}" >> $GITHUB_OUTPUT
                   echo "label=${{ inputs.project-output }}" >> $GITHUB_OUTPUT
@@ -206,8 +206,8 @@ jobs:
               id: build
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: ${{ steps.prebuild-data.outputs.label }}-BUILD
-                  path: ${{ steps.prebuild-data.outputs.file }}
+                  name: ${{ steps.pre-build-data.outputs.label }}-BUILD
+                  path: ${{ steps.pre-build-data.outputs.file }}
                   if-no-files-found: error
                   overwrite: true
                   compression-level: 0
@@ -217,15 +217,15 @@ jobs:
               uses: actions/upload-artifact@v4.6.2
               id: logs
               with:
-                  name: ${{ steps.prebuild-data.outputs.label }}-LOG
-                  path: ${{ steps.prebuild-data.outputs.label }}-BUILD.log
+                  name: ${{ steps.pre-build-data.outputs.label }}-LOG
+                  path: ${{ steps.pre-build-data.outputs.label }}-BUILD.log
                   if-no-files-found: error
                   overwrite: true
                   compression-level: 0
                   retention-days: 30
 
             - name: Write Build Data to Output
-              id: postbuild-data
+              id: post-build-data
               run: |
                   echo "url=${{ steps.build.outputs.artifact-url }}" >> $GITHUB_OUTPUT
                   echo "logs-url=${{ steps.logs.outputs.artifact-url }}" >> $GITHUB_OUTPUT
