@@ -1,5 +1,5 @@
 name: Build Rojo Project
-description: Cancel a Github Actions Workflow with the gh CLI
+description: Build a Rojo Project with Aftman
 
 on:
     workflow_call:
@@ -45,7 +45,7 @@ on:
                 default: 'true'
                 type: string
             repository-owner:
-                description: The repository owner (default `bracketed`, can be customised)
+                description: The repository owner (default `bracketed`)
                 required: false
                 default: bracketed
                 type: string
@@ -78,6 +78,8 @@ jobs:
         name: Build Rojo Project and Upload to Artifacts
         runs-on: ${{ inputs.operating-system }}
         if: github.repository_owner == ${{ inputs.repository-owner }}
+        outputs:
+            build-time: ${{ steps.build-time.outputs.duration }}
         steps:
             - name: Checkout Project
               uses: actions/checkout@v4
@@ -86,6 +88,9 @@ jobs:
                   ref: ${{ inputs.checkout-ref }}
                   token: ${{ secrets.BRSFTWORKS_TOKEN }}
                   submodules: ${{ inputs.with-submodules }}
+
+            - name: Start Install & Build Timer
+              run: echo "START_TIME=$SECONDS" >> $GITHUB_ENV
 
             - name: Install LuaJIT
               uses: leafo/gh-actions-lua@v10
@@ -111,31 +116,82 @@ jobs:
               run: cd ${{ inputs.project-context }}
 
             - name: Build Project ${{ inputs.project-name }}
-              run: rojo build --output ${{ inputs.project-output }}.${{ inputs.project-output-type }} ${{ inputs.project-file }}
+              run: rojo build --output ${{ inputs.project-output }}.${{ inputs.project-output-type }} --verbose ${{ inputs.project-file }} | tee rojo-build-${{ github.run_number }}.log
 
-            - uses: actions/upload-artifact@v4.6.2
+            - name: End Build Timer & Output Total Build Time
+              id: build-time
+              run: echo "duration=$((SECONDS - START_TIME))s" >> $GITHUB_OUTPUT
+
+            - name: Upload Build Rojo Log & Rojo Build
+              uses: actions/upload-artifact@v4.6.2
               with:
                   name: ${{ inputs.artifact-label }}
-                  path: ${{ inputs.project-output }}.${{ inputs.project-output-type }}
+                  path: |
+                      ${{ inputs.project-output }}.${{ inputs.project-output-type }}
+                      rojo-build-${{ github.run_number }}.log
                   if-no-files-found: error
                   overwrite: true
 
     summary:
         name: Generate final build summary info
         runs-on: ${{ inputs.operating-system }}
+        needs: [build]
         if: github.repository_owner == ${{ inputs.repository-owner }}
         steps:
-            - name: Install Aftman
-              uses: Bracketed/Workflows/actions/fetch-artifact-url@main
-              id: fetch
+            - name: Get Build Artifact Data
+              uses: Bracketed/Workflows/actions/fetch-artifact@main
+              id: build-data
               with:
                   artifact-name: ${{ inputs.artifact-label }}
                   GITHUB_TOKEN: ${{ secrets.BRSFTWORKS_TOKEN }}
 
+            - name: Download Build Log Artifact
+              uses: actions/download-artifact@v4.2.1
+              with:
+                  github-token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  name: rojo-build-${{ github.run_number }}.log
+
             - name: Generate Build and Runtime Summary
+              working-directory: $GITHUB_WORKSPACE
               run: |
-                  echo "<h2>Rojo Build summary</h2>"
-                  echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>"
+                  echo "<h2>Rojo Build summary</h2>" >> $GITHUB_STEP_SUMMARY
+                  echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>" >> $GITHUB_STEP_SUMMARY
+                  echo "<br />" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>⬇️<b><a href='${{ steps.build-data.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> (${{ steps.build-data.outputs.artifact-size }} Bytes)</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Build SHA: ${{ steps.build-data.outputs.artifact-sha }}</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "| ID | Name | Status | Duration |" >> $GITHUB_STEP_SUMMARY
+                  echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY
+                  echo "| ${GITHUB_SHA:0:7} | ${{ github.event.repository.name }} | ✅ completed | ${{ needs.build.outputs.build-time }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "<br />" >> $GITHUB_STEP_SUMMARY
+
+                  echo "<details>" >> $GITHUB_STEP_SUMMARY
+                  echo "<summary><b>Build Output</b></summary>" >> $GITHUB_STEP_SUMMARY
+                  echo "<pre lang="txt"><code>" >> $GITHUB_STEP_SUMMARY
+                  cat rojo-build-${{ github.run_number }}.log >> $GITHUB_STEP_SUMMARY
+                  echo "</pre></code>" >> $GITHUB_STEP_SUMMARY
+                  echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+                  echo "<details>" >> $GITHUB_STEP_SUMMARY
+                  echo "<summary><b>Workflow Inputs</b></summary>" >> $GITHUB_STEP_SUMMARY
+                  echo "<pre lang="yaml"><code>" >> $GITHUB_STEP_SUMMARY
+                  echo "inputs:" >> $GITHUB_STEP_SUMMARY
+                  echo "    project-name: ${{ inputs.project-name }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    project-context: ${{ inputs.project-context }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    project-output: ${{ inputs.project-output }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    project-output-type: ${{ inputs.project-output-type }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    project-file: ${{ inputs.project-file }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    artifact-label: ${{ inputs.artifact-label }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    lua-version: ${{ inputs.lua-version }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    with-submodules: ${{ inputs.with-submodules }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    repository-owner: ${{ inputs.repository-owner }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    operating-system: ${{ inputs.operating-system }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    checkout-depth: ${{ inputs.checkout-depth }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    checkout-ref: ${{ inputs.checkout-ref }}" >> $GITHUB_STEP_SUMMARY
+                  echo "secrets:" >> $GITHUB_STEP_SUMMARY
+                  echo "    BRSFTWORKS_TOKEN: ***" >> $GITHUB_STEP_SUMMARY
+                  echo "</pre></code>" >> $GITHUB_STEP_SUMMARY
+                  echo "</details>" >> $GITHUB_STEP_SUMMARY
                   echo "<br />"
-                  echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>"
-                  echo "<p>⬇️<b><a href='${{ steps.fetch.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> (${{ steps.fetch.outputs.artifact-size }} Bytes)</p>"
+                  echo "<a href="https://github.com/Bracketed/Workflows"><small><i>Rojo Build Action by Bracketed Softworks & ninjaninja140</i></small></a>"
+                  echo "<hr />" >> $GITHUB_STEP_SUMMARY

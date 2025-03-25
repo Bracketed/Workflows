@@ -15,22 +15,27 @@ outputs:
     artifact-size:
         description: The size of the artifact in bytes
         value: ${{ steps.get-info.outputs.artifact_size }}
-
+    artifact-sha:
+        description: The artifact SHA
+        value: ${{ steps.get-info.outputs.artifact_sha }}
 runs:
     using: composite
     steps:
-        - name: Get artifact URL
+        - name: Get artifact data
           id: fetch
           run: |
-              ARTIFACT_ID=$(gh api \
+              ARTIFACT_INFO=$(gh api \
                 repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts \
-                --jq '.artifacts[] | select(.name=="${{ inputs.artifact-name }}") | {id: .id, size_in_bytes: .size_in_bytes}')
+                --jq '.artifacts[] | select(.name=="${{ inputs.artifact-name }}") | {id: .id, size_in_bytes: .size_in_bytes, digest: .digest}')
 
               ARTIFACT_ID=$(echo "$ARTIFACT_INFO" | jq -r '.id')
               ARTIFACT_SIZE=$(echo "$ARTIFACT_INFO" | jq -r '.size_in_bytes')
+              ARTIFACT_SHA=$(echo "$ARTIFACT_INFO" | jq -r '.digest')
 
               echo "artifact_url=https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/$ARTIFACT_ID" >> $GITHUB_OUTPUT
               echo "artifact_size=$ARTIFACT_SIZE" >> $GITHUB_OUTPUT
+              echo "artifact_sha=$ARTIFACT_SHA" >> $GITHUB_OUTPUT
+
           shell: bash
           env:
               GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
