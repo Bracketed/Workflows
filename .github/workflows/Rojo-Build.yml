@@ -190,9 +190,9 @@ jobs:
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>⬇️<b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>Build SHA: ${{ needs.build.outputs.build-sha }}</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Build SHA: <code>${{ needs.build.outputs.build-sha }}</code></p>" >> $GITHUB_STEP_SUMMARY
 
-                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td>`${{ needs.build.outputs.build-sha }}`</td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>"
+                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>"
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
 
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
