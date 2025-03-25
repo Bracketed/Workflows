@@ -105,9 +105,11 @@ jobs:
               with:
                   luaVersion: ${{ inputs.lua-version }}
 
-            - name: Apply fix to LuaJIT
-              working-directory: .lua/bin
-              run: mv luajit* luajit
+            - name: Test LuaJIT & Lua
+              run: |
+                  luajit --version
+                  lua --version
+                  lua5.1 --version
 
             - name: Install Aftman
               uses: Bracketed/Workflows/actions/install-aftman@main
