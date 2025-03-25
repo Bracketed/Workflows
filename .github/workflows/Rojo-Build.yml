@@ -64,6 +64,30 @@ on:
                 required: false
                 default: main
                 type: string
+            linters-enabled:
+                description: Allow code linting pre-build (default `false`)
+                required: false
+                default: false
+                type: boolean
+            linter:
+                description: The linter to use in your project pre-build lint stage (default `selene`, options, `'selene'`, `'stylua'`)
+                required: false
+                default: selene
+                type: string
+            linter-arguments:
+                description: Extra arguments to supply to the chosen project linter (default `none`)
+                required: false
+                type: string
+            linter-version:
+                description: Set the version of your linter to install (default `latest`)
+                required: false
+                default: latest
+                type: string
+            summary:
+                description: Display a build summary post-build (default `true`)
+                required: false
+                default: true
+                type: boolean
         secrets:
             BRSFTWORKS_TOKEN:
                 description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
@@ -80,13 +104,13 @@ jobs:
         if: github.repository_owner == ${{ inputs.repository-owner }}
         outputs:
             build-time: ${{ steps.build-time.outputs.duration }}
-            build-label: ${{ steps.build-data.outputs.label }}
-            build-file: ${{ steps.build-data.outputs.file }}
-            build-url: ${{ steps.final-data.outputs.url }}
-            build-sha: ${{ steps.final-data.outputs.sha }}
-            build-sha-small: ${{ steps.final-data.outputs.small-sha }}
-            build-name: ${{ steps.build-data.outputs.name }}
-            file-count: ${{ steps.build-data.outputs.count }}
+            build-label: ${{ steps.prebuild-data.outputs.label }}
+            build-file: ${{ steps.prebuild-data.outputs.file }}
+            build-url: ${{ steps.postbuild-data.outputs.url }}
+            build-sha: ${{ steps.postbuild-data.outputs.sha }}
+            build-sha-small: ${{ steps.postbuild-data.outputs.small-sha }}
+            build-name: ${{ steps.prebuild-data.outputs.name }}
+            file-count: ${{ steps.prebuild-data.outputs.count }}
 
         steps:
             - name: Checkout Project
@@ -99,7 +123,7 @@ jobs:
 
             - name: Export Build Data to Outputs and Environment
               working-directory: ${{ inputs.project-context }}
-              id: build-data
+              id: prebuild-data
               run: |
                   echo "file=${{ inputs.project-output }}.${{ inputs.project-output-type }}" >> $GITHUB_OUTPUT
                   echo "label=${{ inputs.project-output }}" >> $GITHUB_OUTPUT
@@ -136,8 +160,31 @@ jobs:
                   token: ${{ secrets.BRSFTWORKS_TOKEN }}
                   context: ${{ inputs.project-context }}
 
+            - name: Install Foreman
+              uses: Roblox/setup-foreman@v3.2.0
+              with:
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  working-directory: ${{ inputs.project-context }}
+                  allow-external-github-orgs: true
+
             - name: Use the context as the CWD
               run: cd ${{ inputs.project-context }}
+
+            - name: Lint with Selene
+              uses: NTBBloodbath/selene-action@v1.0.0
+              if: inputs.linters-enabled == true && inputs.linter == 'selene'
+              with:
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  args: ${{ inputs.linter-arguments }} .
+                  version: ${{ inputs.linter-version != 'latest' && inputs.linter-version || '' }}
+
+            - name: Lint with StyLua
+              uses: JohnnyMorganz/stylua-action@v4.0.0
+              if: inputs.linters-enabled == true && inputs.linter == 'stylua'
+              with:
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  args: ${{ inputs.linter-arguments }} .
+                  version: ${{ inputs.linter-version }}
 
             - name: Build Project ${{ inputs.project-name }}
               run: rojo build --output $BUILD_FILE --verbose ${{ inputs.project-file }} 2>&1 | tee $BUILD_LABEL-BUILD.log
@@ -150,8 +197,8 @@ jobs:
               id: build
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: ${{ steps.build-data.outputs.label }}-BUILD
-                  path: ${{ steps.build-data.outputs.file }}
+                  name: ${{ steps.prebuild-data.outputs.label }}-BUILD
+                  path: ${{ steps.prebuild-data.outputs.file }}
                   if-no-files-found: error
                   overwrite: true
                   compression-level: 0
@@ -160,15 +207,15 @@ jobs:
             - name: Upload Rojo Build Log
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: ${{ steps.build-data.outputs.label }}-LOG
-                  path: ${{ steps.build-data.outputs.label }}-BUILD.log
+                  name: ${{ steps.prebuild-data.outputs.label }}-LOG
+                  path: ${{ steps.prebuild-data.outputs.label }}-BUILD.log
                   if-no-files-found: error
                   overwrite: true
                   compression-level: 0
                   retention-days: 30
 
             - name: Write Build Data to Output
-              id: final-data
+              id: postbuild-data
               run: |
                   echo "url=${{ steps.build.outputs.artifact-url }}" >> $GITHUB_OUTPUT
                   echo "sha=${{ steps.build.outputs.artifact-digest }}" >> $GITHUB_OUTPUT
@@ -178,7 +225,7 @@ jobs:
         name: Generate final build summary info
         runs-on: ${{ inputs.operating-system }}
         needs: [build]
-        if: github.repository_owner == ${{ inputs.repository-owner }}
+        if: github.repository_owner == ${{ inputs.repository-owner }} && inputs.summary == true
 
         steps:
             - name: Checkout Directory for Execution
@@ -202,11 +249,12 @@ jobs:
                   echo "<img src='https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png' height='100' width='auto'/>" >> $GITHUB_STEP_SUMMARY
                   echo "<h3>Rojo Build Action by Bracketed Softworks</h3>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>⬇️ <b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build alongside the inputs that went into it.<br />Builds with this action are outputted to the Artifacts section of the action runner alongside its build logs from the Rojo Build command, dependencies are installed with Roblox's Foreman and Rojo's Aftman toolchains, Lua code in the repository can also be linted with StyLua or Selene which can be enabled in the workflow inputs.<br />If you liked using this tool, or would like to check out what other reusable workflows we have, you can see them here: <a href="https://github.com/Bracketed/Workflows">Learn more<a /></p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>⬇️ <b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (Compressed at ${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Find our tools useful? <a href="https://github.com/Bracketed/Workflows">Star our repository to support us!<a />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: <code>${{ needs.build.outputs.build-sha }}</code></p>" >> $GITHUB_STEP_SUMMARY
 
-                  echo "<table><tr><th>Hash</th><th>Project Name</th><th>Build Status</th><th>Files</th><th>Extension</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ needs.build.outputs.build-name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.file-count }}</td><td><code>${{ inputs.project-output-type }}</code></td><td>${{ needs.build.outputs.build-time }}</td></tr></table>" >> $GITHUB_STEP_SUMMARY
+                  echo "<table><tr><th>Hash</th><th>Project Name</th><th>Build Status</th><th>Project Files</th><th>Extension</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ needs.build.outputs.build-name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.file-count }}</td><td><code>${{ inputs.project-output-type }}</code></td><td>${{ needs.build.outputs.build-time }}</td></tr></table>" >> $GITHUB_STEP_SUMMARY
 
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
                   echo "<summary><b>Build Output</b></summary>" >> $GITHUB_STEP_SUMMARY
@@ -231,6 +279,11 @@ jobs:
                   echo "    operating-system: ${{ inputs.operating-system }}" >> $GITHUB_STEP_SUMMARY
                   echo "    checkout-depth: ${{ inputs.checkout-depth }}" >> $GITHUB_STEP_SUMMARY
                   echo "    checkout-ref: ${{ inputs.checkout-ref }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    linters-enabled: ${{ inputs.linters-enabled }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    linter: ${{ inputs.linter }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    linter-arguments: ${{ inputs.linter-arguments }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    linter-version: ${{ inputs.linter-version }}" >> $GITHUB_STEP_SUMMARY
+                  echo "    summary: ${{ inputs.summary }}" >> $GITHUB_STEP_SUMMARY
                   echo "secrets:" >> $GITHUB_STEP_SUMMARY
                   echo "    BRSFTWORKS_TOKEN: ***" >> $GITHUB_STEP_SUMMARY
                   echo "</pre></code>" >> $GITHUB_STEP_SUMMARY
