@@ -80,6 +80,9 @@ jobs:
         if: github.repository_owner == ${{ inputs.repository-owner }}
         outputs:
             build-time: ${{ steps.build-time.outputs.duration }}
+            build-label: ${{ steps.build-data.outputs.label }}
+            build-file: ${{ steps.build-data.outputs.file }}
+
         steps:
             - name: Checkout Project
               uses: actions/checkout@v4
@@ -88,6 +91,14 @@ jobs:
                   ref: ${{ inputs.checkout-ref }}
                   token: ${{ secrets.BRSFTWORKS_TOKEN }}
                   submodules: ${{ inputs.with-submodules }}
+
+            - name: Export Build Data to Outputs and Environment
+              id: build-data
+              run: |
+                  echo "file=${{ inputs.project-output }}.${{ inputs.project-output-type }}" >> $GITHUB_OUTPUT
+                  echo "label=${{ inputs.project-output }}" >> $GITHUB_OUTPUT
+                  echo "BUILD_LABEL=${{ inputs.project-output }}" >> $GITHUB_ENV
+                  echo "BUILD_FILE=${{ inputs.project-output }}.${{ inputs.project-output-type }}" >> $GITHUB_ENV
 
             - name: Start Install & Build Timer
               run: echo "START_TIME=$SECONDS" >> $GITHUB_ENV
@@ -115,7 +126,7 @@ jobs:
               run: cd ${{ inputs.project-context }}
 
             - name: Build Project ${{ inputs.project-name }}
-              run: rojo build --output ${{ inputs.project-output }}.${{ inputs.project-output-type }} --verbose ${{ inputs.project-file }} | tee rojo-build-${{ github.run_number }}.log
+              run: rojo build --output $BUILD_FILE --verbose ${{ inputs.project-file }} | tee $BUILD_LABEL-BUILD.log
 
             - name: End Build Timer & Output Total Build Time
               id: build-time
@@ -124,16 +135,16 @@ jobs:
             - name: Upload Rojo Build
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: ${{ inputs.artifact-label }}
-                  path: ${{ inputs.project-output }}.${{ inputs.project-output-type }}
+                  name: $BUILD_LABEL
+                  path: $BUILD_FILE
                   if-no-files-found: error
                   overwrite: true
 
             - name: Upload Rojo Build Log
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: ${{ inputs.artifact-label }}-LOG
-                  path: rojo-build-${{ github.run_number }}.log
+                  name: $BUILD_LABEL-LOG
+                  path: $BUILD_LABEL-BUILD.log
                   if-no-files-found: error
                   overwrite: true
 
@@ -147,14 +158,14 @@ jobs:
               uses: Bracketed/Workflows/actions/fetch-artifact@main
               id: build-data
               with:
-                  artifact-name: ${{ inputs.artifact-label }}
+                  artifact-name: ${{ needs.build.outputs.build-label }}
                   GITHUB_TOKEN: ${{ secrets.BRSFTWORKS_TOKEN }}
 
             - name: Download Build Log Artifact
               uses: actions/download-artifact@v4.2.1
               with:
                   github-token: ${{ secrets.BRSFTWORKS_TOKEN }}
-                  name: ${{ inputs.artifact-label }}-LOG
+                  name: ${{ needs.build.outputs.build-label }}-LOG
 
             - name: Generate Build and Runtime Summary
               working-directory: $GITHUB_WORKSPACE
@@ -173,7 +184,7 @@ jobs:
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
                   echo "<summary><b>Build Output</b></summary>" >> $GITHUB_STEP_SUMMARY
                   echo "<pre lang="txt"><code>" >> $GITHUB_STEP_SUMMARY
-                  cat rojo-build-${{ github.run_number }}.log >> $GITHUB_STEP_SUMMARY
+                  cat ${{ needs.build.outputs.build-label }}-BUILD.log >> $GITHUB_STEP_SUMMARY
                   echo "</pre></code>" >> $GITHUB_STEP_SUMMARY
                   echo "</details>" >> $GITHUB_STEP_SUMMARY
 
