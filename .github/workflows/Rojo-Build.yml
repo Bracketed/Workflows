@@ -185,14 +185,14 @@ jobs:
               run: |
                   echo "<h2>Rojo Build summary</h2>" >> $GITHUB_STEP_SUMMARY
                   echo "<img src='https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png' height='100' width='auto'/>" >> $GITHUB_STEP_SUMMARY
-                  echo "<h3>Rojo Build Action by Bracketed Softworks</h3>"
-                  echo "<p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>"
+                  echo "<h3>Rojo Build Action by Bracketed Softworks</h3>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>" >> $GITHUB_STEP_SUMMARY
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>⬇️<b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: <code>${{ needs.build.outputs.build-sha }}</code></p>" >> $GITHUB_STEP_SUMMARY
 
-                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>"
+                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>" >> $GITHUB_STEP_SUMMARY
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
 
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
@@ -222,6 +222,6 @@ jobs:
                   echo "    BRSFTWORKS_TOKEN: ***" >> $GITHUB_STEP_SUMMARY
                   echo "</pre></code>" >> $GITHUB_STEP_SUMMARY
                   echo "</details>" >> $GITHUB_STEP_SUMMARY
-                  echo "<br />"
-                  echo "<a href="https://github.com/Bracketed/Workflows"><i>Rojo Build Action by Bracketed Softworks & ninjaninja140</i></a>"
+                  echo "<br />" >> $GITHUB_STEP_SUMMARY
+                  echo "<a href="https://github.com/Bracketed/Workflows"><i>Rojo Build Action by Bracketed Softworks & ninjaninja140</i></a>" >> $GITHUB_STEP_SUMMARY
                   echo "<hr />" >> $GITHUB_STEP_SUMMARY
