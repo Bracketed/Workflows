@@ -181,7 +181,7 @@ jobs:
                   echo "<h2>Rojo Build summary</h2>" >> $GITHUB_STEP_SUMMARY
                   echo "<img src='https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png' height='100' width='auto'/>" >> $GITHUB_STEP_SUMMARY
                   echo "<h3>Rojo Build Action by Bracketed Softworks</h3>"
-                  echo <p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> \| <a href="https://rojo.space">Rojo</a> \| <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>
+                  echo "<p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>"
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>⬇️<b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> ($SIZE)</p>" >> $GITHUB_STEP_SUMMARY
