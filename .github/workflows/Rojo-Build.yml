@@ -154,7 +154,7 @@ jobs:
               uses: actions/download-artifact@v4.2.1
               with:
                   github-token: ${{ secrets.BRSFTWORKS_TOKEN }}
-                  name: rojo-build-${{ github.run_number }}.log
+                  name: ${{ inputs.artifact-label }}-LOG
 
             - name: Generate Build and Runtime Summary
               working-directory: $GITHUB_WORKSPACE
