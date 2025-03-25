@@ -158,7 +158,7 @@ jobs:
                   echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>" >> $GITHUB_STEP_SUMMARY
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>⬇️<b><a href='${{ steps.build-data.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> (${{ steps.build-data.outputs.artifact-size }} Bytes)</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>⬇️<b><a href='${{ steps.build-data.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> ( $(echo ${{ steps.build-data.outputs.artifact-size }} | numfmt --to=iec-i --suffix=B | awk '{printf "%.1f %s\n", $1/1, $2}') )</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: ${{ steps.build-data.outputs.artifact-sha }}</p>" >> $GITHUB_STEP_SUMMARY
                   echo "| ID | Name | Status | Duration |" >> $GITHUB_STEP_SUMMARY
                   echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY
