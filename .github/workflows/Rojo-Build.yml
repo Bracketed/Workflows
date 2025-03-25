@@ -85,6 +85,8 @@ jobs:
             build-url: ${{ steps.final-data.outputs.url }}
             build-sha: ${{ steps.final-data.outputs.sha }}
             build-sha-small: ${{ steps.final-data.outputs.small-sha }}
+            build-name: ${{ steps.build-data.outputs.name }}
+            file-count: ${{ steps.build-data.outputs.count }}
 
         steps:
             - name: Checkout Project
@@ -96,12 +98,21 @@ jobs:
                   submodules: ${{ inputs.with-submodules }}
 
             - name: Export Build Data to Outputs and Environment
+              working-directory: ${{ inputs.project-context }}
               id: build-data
               run: |
                   echo "file=${{ inputs.project-output }}.${{ inputs.project-output-type }}" >> $GITHUB_OUTPUT
                   echo "label=${{ inputs.project-output }}" >> $GITHUB_OUTPUT
                   echo "BUILD_LABEL=${{ inputs.project-output }}" >> $GITHUB_ENV
                   echo "BUILD_FILE=${{ inputs.project-output }}.${{ inputs.project-output-type }}" >> $GITHUB_ENV
+                  echo "count=$(find . -type f \( -name "*.json" -o -name "*.lua" -o -name "*.luau" -o -name "*.txt" -o -name "*.rbxm" -o -name "*.rbxl" -o -name "*.rbxmx" -o -name "*.rbxlx" -o -name "*.toml" -o -name "*.csv" -o -name "*.mp3" -o -name "*.wav" -o -name "*.ogg" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.bmp" -o -name "*.gif" \) | wc -l)" >> $GITHUB_OUTPUT
+
+                  if [ ! -f ${{ inputs.project-file }} ]; then
+                    echo "name=${{ inputs.project-output }}" >> "$GITHUB_OUTPUT"
+                    exit 0
+                  fi
+
+                  echo "name=$(jq -r .name ${{ inputs.project-file }})" >> $GITHUB_OUTPUT
 
             - name: Start Install & Build Timer
               run: echo "START_TIME=$SECONDS" >> $GITHUB_ENV
@@ -143,6 +154,8 @@ jobs:
                   path: ${{ steps.build-data.outputs.file }}
                   if-no-files-found: error
                   overwrite: true
+                  compression-level: 0
+                  retention-days: 30
 
             - name: Upload Rojo Build Log
               uses: actions/upload-artifact@v4.6.2
@@ -151,6 +164,8 @@ jobs:
                   path: ${{ steps.build-data.outputs.label }}-BUILD.log
                   if-no-files-found: error
                   overwrite: true
+                  compression-level: 0
+                  retention-days: 30
 
             - name: Write Build Data to Output
               id: final-data
@@ -178,7 +193,7 @@ jobs:
               working-directory: ${{ github.workspace }}
               id: gen
               run: |
-                  echo "size=$(stat --format=%s ${{ needs.build.outputs.build-label }}-BUILD/${{ needs.build.outputs.build-file }} | numfmt --to=iec --suffix=B | sed 's/\([0-9.]*\)\([A-Za-z]*\)$/\1 \2/' | sed 's/KiB/Kibibytes/' | sed 's/MiB/Mebibytes/' | sed 's/GiB/Gibibytes/' | sed 's/TiB/Tebibytes/' | sed 's/PiB/Pebibytes/')" >> $GITHUB_OUTPUT
+                  echo "size=$(stat --format=%s ${{ needs.build.outputs.build-label }}-BUILD/${{ needs.build.outputs.build-file }} | numfmt --to=iec --suffix=B | sed 's/\([0-9.]*\)\([A-Za-z]*\)$/\1 \2/' | sed 's/B/Bytes/' | sed 's/KiB/Kibibytes/' | sed 's/MiB/Mebibytes/' | sed 's/GiB/Gibibytes/' | sed 's/TiB/Tebibytes/' | sed 's/PiB/Pebibytes/')" >> $GITHUB_OUTPUT
 
             - name: Generate Build and Runtime Summary
               working-directory: ${{ github.workspace }}
@@ -188,11 +203,10 @@ jobs:
                   echo "<img src='https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png' height='100' width='auto'/>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>⬇️<b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>⬇️ <b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: <code>${{ needs.build.outputs.build-sha }}</code></p>" >> $GITHUB_STEP_SUMMARY
 
-                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>" >> $GITHUB_STEP_SUMMARY
-                  echo "<br />" >> $GITHUB_STEP_SUMMARY
+                  echo "<table><tr><th>Hash</th><th>Project Name</th><th>Build Status</th><th>Files</th><th>Extension</th><th>Duration</th></tr><tr><td><code>${{ needs.build.outputs.build-sha-small }}</code></td><td>${{ needs.build.outputs.build-name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.file-count }}</td><td><code>${{ inputs.project-output-type }}</code></td><td>${{ needs.build.outputs.build-time }}</td></tr></table>" >> $GITHUB_STEP_SUMMARY
 
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
                   echo "<summary><b>Build Output</b></summary>" >> $GITHUB_STEP_SUMMARY
