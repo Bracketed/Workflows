@@ -263,8 +263,8 @@ jobs:
                   echo "<p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build alongside the inputs that went into it.<br />Builds with this action are outputted to the Artifacts section of the action runner alongside its build logs from the Rojo Build command.</p>" >> $GITHUB_STEP_SUMMARY
 
-                  echo "<p>⬇️ <b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (Compressed at ${{ steps.gen.outputs.size }})</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>⬇️ <b><a href='${{ needs.build.outputs.build-logs-url }}'>${{ needs.build.outputs.build-label }}-BUILD.log</a></b> (Compressed at ${{ steps.gen.outputs.logs-size }})</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>⬇️ <b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> (Compressed at ${{ steps.gen.outputs.size }})<br />" >> $GITHUB_STEP_SUMMARY
+                  echo "⬇️ <b><a href='${{ needs.build.outputs.build-logs-url }}'>${{ needs.build.outputs.build-label }}-BUILD.log</a></b> (Compressed at ${{ steps.gen.outputs.logs-size }})</p>" >> $GITHUB_STEP_SUMMARY
 
                   echo "<p>Find our tools useful? <a href="https://github.com/Bracketed/Workflows">Star our repository to support us!<a />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: <code>${{ needs.build.outputs.build-sha }}</code></p>" >> $GITHUB_STEP_SUMMARY
