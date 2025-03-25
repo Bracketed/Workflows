@@ -1,0 +1,141 @@
+name: Build Rojo Project
+description: Cancel a Github Actions Workflow with the gh CLI
+
+on:
+    workflow_call:
+        inputs:
+            project-name:
+                description: The name of the project
+                required: false
+                default: '@${{ github.repository }}'
+                type: string
+            project-context:
+                description: The working directory context of the Rojo build
+                required: false
+                default: .
+                type: string
+            project-output:
+                description: The output file name of the Rojo build
+                required: false
+                default: '${{ github.repository_owner }}~${{ github.event.repository.name }}~${GITHUB_SHA:0:7}'
+                type: string
+            artifact-label:
+                description: The label of the artifact published on a successful build
+                required: false
+                default: ${{ inputs.project-output }}
+                type: string
+            project-output-type:
+                description: 'The output file type of the Rojo build (Options: `rbxm` (default), `rbxmx`, `rbxl`, `rbxlx`)'
+                required: false
+                default: rbxm
+                type: string
+            project-file:
+                description: The project file for your Rojo project (default `default.project.json`)
+                required: false
+                default: default.project.json
+                type: string
+            lua-version:
+                description: The Lua version to use when installing Lua to compile the project (default `5.1`)
+                required: false
+                default: 5.1
+                type: number
+            with-submodules:
+                description: Whether to include submodules when checking out the repository (default `false`)
+                required: false
+                default: 'true'
+                type: string
+            repository-owner:
+                description: The repository owner (default `bracketed`, can be customised)
+                required: false
+                default: bracketed
+                type: string
+            operating-system:
+                description: Base OS to use (default `ubuntu-latest`)
+                required: false
+                default: ubuntu-latest
+                type: string
+            checkout-depth:
+                description: The depth of `actions/checkout` to fetch from (default `0`)
+                required: false
+                default: 0
+                type: number
+            checkout-ref:
+                description: The branch reference `actions/checkout` will use to pull from (default `main`)
+                required: false
+                default: main
+                type: string
+        secrets:
+            BRSFTWORKS_TOKEN:
+                description: The token to authenticate with the GitHub repository used to bypass `main` branch checks
+                required: true
+
+concurrency:
+    group: ${{ github.workflow }}|${{ github.head_ref || github.ref }}|${{ inputs.operating-system }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        name: Build Rojo Project and Upload to Artifacts
+        runs-on: ${{ inputs.operating-system }}
+        if: github.repository_owner == ${{ inputs.repository-owner }}
+        steps:
+            - name: Checkout Project
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: ${{ inputs.checkout-ref }}
+                  ref: ${{ inputs.checkout-ref }}
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  submodules: ${{ inputs.with-submodules }}
+
+            - name: Install LuaJIT
+              uses: leafo/gh-actions-lua@v10
+              with:
+                  luaVersion: luajit
+
+            - name: Install Lua Version ${{ inputs.lua-version }}
+              uses: leafo/gh-actions-lua@v10
+              with:
+                  luaVersion: ${{ inputs.lua-version }}
+
+            - name: Apply fix to LuaJIT
+              working-directory: .lua/bin
+              run: mv luajit* luajit
+
+            - name: Install Aftman
+              uses: Bracketed/Workflows/actions/install-aftman@main
+              with:
+                  token: ${{ secrets.BRSFTWORKS_TOKEN }}
+                  context: ${{ inputs.project-context }}
+
+            - name: Use the context as the CWD
+              run: cd ${{ inputs.project-context }}
+
+            - name: Build Project ${{ inputs.project-name }}
+              run: rojo build --output ${{ inputs.project-output }}.${{ inputs.project-output-type }} ${{ inputs.project-file }}
+
+            - uses: actions/upload-artifact@v4.6.2
+              with:
+                  name: ${{ inputs.artifact-label }}
+                  path: ${{ inputs.project-output }}.${{ inputs.project-output-type }}
+                  if-no-files-found: error
+                  overwrite: true
+
+    summary:
+        name: Generate final build summary info
+        runs-on: ${{ inputs.operating-system }}
+        if: github.repository_owner == ${{ inputs.repository-owner }}
+        steps:
+            - name: Install Aftman
+              uses: Bracketed/Workflows/actions/fetch-artifact-url@main
+              id: fetch
+              with:
+                  artifact-name: ${{ inputs.artifact-label }}
+                  GITHUB_TOKEN: ${{ secrets.BRSFTWORKS_TOKEN }}
+
+            - name: Generate Build and Runtime Summary
+              run: |
+                  echo "<h2>Rojo Build summary</h2>"
+                  echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>"
+                  echo "<br />"
+                  echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>"
+                  echo "<p>⬇️<b><a href='${{ steps.fetch.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> (${{ steps.fetch.outputs.artifact-size }} Bytes)</p>"

@@ -81,7 +81,6 @@ const Content: Array<string> = [
 	buildGlossaryMarkdown({ name: 'Workflows', data: Workflows }, { name: 'Actions', data: Actions }),
 	'## Workflows:',
 	...Workflows.map((w) => w.markdown),
-	'\n\n',
 	'## Actions:',
 	...Actions.map((w) => w.markdown),
 	buildDateFooterMarkdown(),

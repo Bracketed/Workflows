@@ -6,7 +6,8 @@ on:
         inputs:
             project-name:
                 description: The name of the project
-                required: true
+                required: false
+                default: '@${{ github.repository }}'
                 type: string
             repository-owner:
                 description: The repository owner (default `bracketed`, can be customised)

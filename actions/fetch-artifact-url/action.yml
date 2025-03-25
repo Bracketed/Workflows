@@ -1,0 +1,36 @@
+name: Fetch Artifact URL
+description: Fetch the artifact URL from a workflow run
+
+inputs:
+    artifact-name:
+        description: The name of the artifact to fetch
+        required: true
+    GITHUB_TOKEN:
+        description: The Github Token to utilise when running this action
+        required: true
+outputs:
+    artifact-url:
+        description: The URL of the uploaded artifact
+        value: ${{ steps.fetch.outputs.artifact_url  }}
+    artifact-size:
+        description: The size of the artifact in bytes
+        value: ${{ steps.get-info.outputs.artifact_size }}
+
+runs:
+    using: composite
+    steps:
+        - name: Get artifact URL
+          id: fetch
+          run: |
+              ARTIFACT_ID=$(gh api \
+                repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts \
+                --jq '.artifacts[] | select(.name=="${{ inputs.artifact-name }}") | {id: .id, size_in_bytes: .size_in_bytes}')
+
+              ARTIFACT_ID=$(echo "$ARTIFACT_INFO" | jq -r '.id')
+              ARTIFACT_SIZE=$(echo "$ARTIFACT_INFO" | jq -r '.size_in_bytes')
+
+              echo "artifact_url=https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/$ARTIFACT_ID" >> $GITHUB_OUTPUT
+              echo "artifact_size=$ARTIFACT_SIZE" >> $GITHUB_OUTPUT
+          shell: bash
+          env:
+              GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
