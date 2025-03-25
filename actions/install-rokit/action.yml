@@ -23,7 +23,7 @@ runs:
     using: composite
     steps:
         - name: Detect System Architecture
-          shell: bash | cmd
+          shell: bash
           run: |
               ARCH=$(uname -m)
               echo "ARCH=$ARCH" >> $GITHUB_ENV
