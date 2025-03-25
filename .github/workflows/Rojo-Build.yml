@@ -82,6 +82,8 @@ jobs:
             build-time: ${{ steps.build-time.outputs.duration }}
             build-label: ${{ steps.build-data.outputs.label }}
             build-file: ${{ steps.build-data.outputs.file }}
+            build-url: ${{ steps.final-data.outputs.url }}
+            build-sha: ${{ steps.final-data.outputs.sha }}
 
         steps:
             - name: Checkout Project
@@ -126,13 +128,14 @@ jobs:
               run: cd ${{ inputs.project-context }}
 
             - name: Build Project ${{ inputs.project-name }}
-              run: rojo build --output $BUILD_FILE --verbose ${{ inputs.project-file }} | tee $BUILD_LABEL-BUILD.log
+              run: rojo build --output $BUILD_FILE --verbose ${{ inputs.project-file }} 2>&1 | tee $BUILD_LABEL-BUILD.log
 
             - name: End Build Timer & Output Total Build Time
               id: build-time
               run: echo "duration=$((SECONDS - START_TIME))s" >> $GITHUB_OUTPUT
 
             - name: Upload Rojo Build
+              id: build
               uses: actions/upload-artifact@v4.6.2
               with:
                   name: ${{ steps.build-data.outputs.label }}-BUILD
@@ -148,6 +151,12 @@ jobs:
                   if-no-files-found: error
                   overwrite: true
 
+            - name: Write Build Data to Output
+              id: final-data
+              run: |
+                  echo "url=${{ steps.build.outputs.artifact-url }}" >> $GITHUB_OUTPUT
+                  echo "sha=${{ steps.build.outputs.artifact-digest }}" >> $GITHUB_OUTPUT
+
     summary:
         name: Generate final build summary info
         runs-on: ${{ inputs.operating-system }}
@@ -157,31 +166,32 @@ jobs:
             - name: Checkout Directory for Execution
               uses: actions/checkout@v4
 
-            - name: Get Build Artifact Data
-              uses: Bracketed/Workflows/actions/fetch-artifact@main
-              id: build-data
-              with:
-                  artifact-name: ${{ needs.build.outputs.build-label }}-BUILD
-                  GITHUB_TOKEN: ${{ secrets.BRSFTWORKS_TOKEN }}
-
             - name: Download Build Log Artifact
               uses: actions/download-artifact@v4.2.1
               with:
                   github-token: ${{ secrets.BRSFTWORKS_TOKEN }}
-                  name: ${{ needs.build.outputs.build-label }}-LOG
+
+            - name: Generate Summary Values
+              run: |
+                  echo "SIZE=$(stat --format=%s ${{ needs.build.outputs.build-file }} | numfmt --to=iec)"
 
             - name: Generate Build and Runtime Summary
               working-directory: ${{ github.workspace }}
               run: |
                   echo "<h2>Rojo Build summary</h2>" >> $GITHUB_STEP_SUMMARY
                   echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>" >> $GITHUB_STEP_SUMMARY
+                  echo "<h3>Rojo Build Action by Bracketed Softworks</h3>"
+                  echo <p>Quick Links - <a href="https://www.bracketed.co.uk">Bracketed Softworks</a> | <a href="https://rojo.space">Rojo</a> | <a href="https://github.com/Bracketed/Workflows"> More Workflows by Bracketed Softworks</a></p>
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>⬇️<b><a href='${{ steps.build-data.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> ( $(echo ${{ steps.build-data.outputs.artifact-size }} | numfmt --to=iec-i --suffix=B | awk '{printf "%.1f %s\n", $1/1, $2}') )</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "<p>Build SHA: ${{ steps.build-data.outputs.artifact-sha }}</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>⬇️<b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> ($SIZE)</p>" >> $GITHUB_STEP_SUMMARY
+                  echo "<p>Build SHA: ${{ needs.build.outputs.build-sha }}</p>" >> $GITHUB_STEP_SUMMARY
                   echo "| Hash | Name | Status | Duration |" >> $GITHUB_STEP_SUMMARY
+                  echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY
+                  echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "| ${GITHUB_SHA:0:7} | ${{ github.event.repository.name }} | ✅ completed | ${{ needs.build.outputs.build-time }} |" >> $GITHUB_STEP_SUMMARY
+                  echo "<br />" >> $GITHUB_STEP_SUMMARY
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
 
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
@@ -212,5 +222,5 @@ jobs:
                   echo "</pre></code>" >> $GITHUB_STEP_SUMMARY
                   echo "</details>" >> $GITHUB_STEP_SUMMARY
                   echo "<br />"
-                  echo "<a href="https://github.com/Bracketed/Workflows"><small><i>Rojo Build Action by Bracketed Softworks & ninjaninja140</i></small></a>"
+                  echo "<a href="https://github.com/Bracketed/Workflows"><i>Rojo Build Action by Bracketed Softworks & ninjaninja140</i></a>"
                   echo "<hr />" >> $GITHUB_STEP_SUMMARY
