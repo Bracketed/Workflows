@@ -84,6 +84,7 @@ jobs:
             build-file: ${{ steps.build-data.outputs.file }}
             build-url: ${{ steps.final-data.outputs.url }}
             build-sha: ${{ steps.final-data.outputs.sha }}
+            build-sha-small: ${{ steps.final-data.outputs.small-sha }}
 
         steps:
             - name: Checkout Project
@@ -156,6 +157,7 @@ jobs:
               run: |
                   echo "url=${{ steps.build.outputs.artifact-url }}" >> $GITHUB_OUTPUT
                   echo "sha=${{ steps.build.outputs.artifact-digest }}" >> $GITHUB_OUTPUT
+                  echo "small-sha${{ steps.build.outputs.artifact-digest }}:0:7" >> $GITHUB_OUTPUT
 
     summary:
         name: Generate final build summary info
@@ -188,7 +190,7 @@ jobs:
                   echo "<p>⬇️<b><a href='${{ needs.build.outputs.build-url }}'>${{ needs.build.outputs.build-file }}</a></b> ($SIZE)</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: ${{ needs.build.outputs.build-sha }}</p>" >> $GITHUB_STEP_SUMMARY
 
-                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td>`${GITHUB_SHA:0:7}`</td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>"
+                  echo "<table><tr><th>Hash</th><th>Name</th><th>Status</th><th>Duration</th></tr><tr><td>`${{ needs.build.outputs.build-sha-small }}`</td><td>${{ github.event.repository.name }}</td><td>✅ completed</td><td>${{ needs.build.outputs.build-time }}</td></tr></table>"
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
 
                   echo "<details>" >> $GITHUB_STEP_SUMMARY
