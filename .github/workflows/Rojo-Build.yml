@@ -135,16 +135,16 @@ jobs:
             - name: Upload Rojo Build
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: $BUILD_LABEL
-                  path: $BUILD_FILE
+                  name: ${{ steps.build-data.outputs.label }}
+                  path: ${{ steps.build-data.outputs.file }}
                   if-no-files-found: error
                   overwrite: true
 
             - name: Upload Rojo Build Log
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: $BUILD_LABEL-LOG
-                  path: $BUILD_LABEL-BUILD.log
+                  name: ${{ steps.build-data.outputs.label }}-LOG
+                  path: ${{ steps.build-data.outputs.file }}-BUILD.log
                   if-no-files-found: error
                   overwrite: true
 
