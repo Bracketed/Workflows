@@ -36,7 +36,6 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 #### Actions:
 
 *   [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
-*   [Fetch Artifact URL](#actions/fetch-artifact/action.yml)
 *   [Configure Git CLI](#actions/git-configure/action.yml)
 *   [Install Aftman](#actions/install-aftman/action.yml)
 *   [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
@@ -217,19 +216,6 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
-#### [Fetch Artifact URL](#actions/fetch-artifact/action.yml)
-
-*   Component link: `Bracketed/Workflows/actions/fetch-artifact@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/fetch-artifact/action.yml)
-*   Description: Fetch the artifact URL from a workflow run
-
-**Inputs:**
-
-*   **artifact-name**: The name of the artifact to fetch
-    *   Required: `true`
-    *   Type: `string`
-*   **GITHUB_TOKEN**: The Github Token to utilise when running this action
-    *   Required: `true`
-    *   Type: `string`
 #### [Configure Git CLI](#actions/git-configure/action.yml)
 
 *   Component link: `Bracketed/Workflows/actions/git-configure@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/git-configure/action.yml)
@@ -293,7 +279,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 25/03/2025 in **[133dcc4](Bracketed/Workflows.git/commit/133dcc45be394ea0c52e36ef70772cd37f0eac52)**_  
+_Last Edited by ninjaninja140 at 25/03/2025 in **[06223df](Bracketed/Workflows.git/commit/06223dff6608dc5ed552d0f64adaf72154f9d7d8)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
