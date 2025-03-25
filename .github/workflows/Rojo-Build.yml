@@ -105,12 +105,6 @@ jobs:
               with:
                   luaVersion: ${{ inputs.lua-version }}
 
-            - name: Test LuaJIT & Lua
-              run: |
-                  luajit --version
-                  lua --version
-                  lua5.1 --version
-
             - name: Install Aftman
               uses: Bracketed/Workflows/actions/install-aftman@main
               with:
