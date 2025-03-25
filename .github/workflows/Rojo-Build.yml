@@ -154,9 +154,6 @@ jobs:
         needs: [build]
         if: github.repository_owner == ${{ inputs.repository-owner }}
         steps:
-            - name: Checkout Directory for Execution
-              uses: actions/checkout@v4
-
             - name: Get Build Artifact Data
               uses: Bracketed/Workflows/actions/fetch-artifact@main
               id: build-data
