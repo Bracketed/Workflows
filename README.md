@@ -145,6 +145,24 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `main`
     *   Type: `string`
+*   **linters-enabled**: Allow code linting pre-build (default `false`)
+    *   Required: `false`
+    *   Type: `boolean`
+*   **linter**: The linter to use in your project pre-build lint stage (default `selene`, options, `'selene'`, `'stylua'`)
+    *   Required: `false`
+    *   Default: `selene`
+    *   Type: `string`
+*   **linter-arguments**: Extra arguments to supply to the chosen project linter (default `none`)
+    *   Required: `false`
+    *   Type: `string`
+*   **linter-version**: Set the version of your linter to install (default `latest`)
+    *   Required: `false`
+    *   Default: `latest`
+    *   Type: `string`
+*   **summary**: Display a build summary post-build (default `true`)
+    *   Required: `false`
+    *   Default: `true`
+    *   Type: `boolean`
 #### [Package.json Version Check](#.github/workflows/Version-Check.yml)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Version-Check.yml)
@@ -279,7 +297,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 25/03/2025 in **[5158e11](Bracketed/Workflows.git/commit/5158e110e0454249b9317e4c760cf7699f4ac639)**_  
+_Last Edited by ninjaninja140 at 25/03/2025 in **[4c99963](Bracketed/Workflows.git/commit/4c9996336532f503ce07bbc0fa946073809f5014)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
