@@ -1,0 +1,56 @@
+name: Configure Git CLI
+description: Configure the Git CLI with the correct values and objects for usage in a command line environment
+
+inputs:
+    toolchain-version:
+        description: The version of the rust toolchain to install (default `stable`)
+        default: stable
+        required: false
+    rokit-version:
+        description: Rokit Version to install from Cargo (default `latest`)
+        default: latest
+        required: false
+    self-install:
+        description: Run `rokit self-install` after installing Rokit (default `true`)
+        default: 'true'
+        required: false
+    install-context:
+        description: Context in directory of where Rokit will run `rokit self-install` post install (default `.`)
+        default: .
+        required: false
+
+runs:
+    using: composite
+    steps:
+        - name: Detect System Architecture
+          shell: bash | cmd
+          run: |
+              ARCH=$(uname -m)
+              echo "ARCH=$ARCH" >> $GITHUB_ENV
+
+        - name: Initialise Windows Build Support
+          uses: ilammy/msvc-dev-cmd@v1
+          with:
+              arch: ${{ env.ARCH == 'x86_64' && 'amd64' || 'x86' }}
+
+        - name: Install the Rust Toolchain
+          uses: actions-rust-lang/setup-rust-toolchain@v1.11.0
+          with:
+              toolchain: ${{ inputs.toolchain-version }}
+
+        - name: Install Rokit from Cargo
+          shell: bash
+          run: |
+              VERSION=${{ inputs.rokit-version || 'latest' }}
+
+              if [ "$VERSION" = "latest" ]; then
+                cargo install rokit --locked
+              else
+                cargo install rokit --locked --version "$VERSION"
+              fi
+
+        - name: Run Rokit self-install
+          shell: bash
+          if: inputs.self-install == 'true'
+          working-directory: ${{ inputs.install-context }}
+          run: rokit self-install

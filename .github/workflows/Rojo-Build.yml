@@ -160,6 +160,11 @@ jobs:
                   token: ${{ secrets.BRSFTWORKS_TOKEN }}
                   context: ${{ inputs.project-context }}
 
+            - name: Install Rokit
+              uses: Bracketed/Workflows/actions/install-rokit@main
+              with:
+                  install-context: ${{ inputs.project-context }}
+
             - name: Install Foreman
               uses: Roblox/setup-foreman@v3.2.0
               with:
