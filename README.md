@@ -39,6 +39,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 *   [Configure Git CLI](#actions/git-configure/action.yml)
 *   [Install Aftman](#actions/install-aftman/action.yml)
 *   [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
+*   [Configure Git CLI](#actions/install-rokit/action.yml)
 *   [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 ## Workflows:
 #### [Node Package Publish](#.github/workflows/Package-Publish.yml)
@@ -284,6 +285,29 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
+#### [Configure Git CLI](#actions/install-rokit/action.yml)
+
+*   Component link: `Bracketed/Workflows/actions/install-rokit@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/install-rokit/action.yml)
+*   Description: Configure the Git CLI with the correct values and objects for usage in a command line environment
+
+**Inputs:**
+
+*   **toolchain-version**: The version of the rust toolchain to install (default `stable`)
+    *   Required: `false`
+    *   Default: `stable`
+    *   Type: `string`
+*   **rokit-version**: Rokit Version to install from Cargo (default `latest`)
+    *   Required: `false`
+    *   Default: `latest`
+    *   Type: `string`
+*   **self-install**: Run `rokit self-install` after installing Rokit (default `true`)
+    *   Required: `false`
+    *   Default: `true`
+    *   Type: `string`
+*   **install-context**: Context in directory of where Rokit will run `rokit self-install` post install (default `.`)
+    *   Required: `false`
+    *   Default: `.`
+    *   Type: `string`
 #### [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 
 *   Component link: `Bracketed/Workflows/actions/set-swap-space@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/set-swap-space/action.yml)
@@ -297,7 +321,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 25/03/2025 in **[4c99963](Bracketed/Workflows.git/commit/4c9996336532f503ce07bbc0fa946073809f5014)**_  
+_Last Edited by ninjaninja140 at 25/03/2025 in **[5ce2f9f](Bracketed/Workflows.git/commit/5ce2f9fcbcf4b472427facc4731cec0e77070946)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
