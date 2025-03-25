@@ -171,7 +171,6 @@ jobs:
                   name: ${{ needs.build.outputs.build-label }}-LOG
 
             - name: Generate Build and Runtime Summary
-              working-directory: $GITHUB_WORKSPACE
               run: |
                   echo "<h2>Rojo Build summary</h2>" >> $GITHUB_STEP_SUMMARY
                   echo "<img src="https://rojo.space/assets/images/logo-151511d418967797798e02dc0ca74aaf.png" height="100" width="auto"/>" >> $GITHUB_STEP_SUMMARY
