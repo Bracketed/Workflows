@@ -144,7 +144,7 @@ jobs:
               uses: actions/upload-artifact@v4.6.2
               with:
                   name: ${{ steps.build-data.outputs.label }}-LOG
-                  path: ${{ steps.build-data.outputs.file }}-BUILD.log
+                  path: ${{ steps.build-data.outputs.label }}-BUILD.log
                   if-no-files-found: error
                   overwrite: true
 
@@ -176,7 +176,7 @@ jobs:
                   echo "<p>Here's the build summary for your Rojo project! The report folded up below will outline all the details of your build.</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>⬇️<b><a href='${{ steps.build-data.outputs.artifact-url }}'>${{ inputs.project-output }}.${{ inputs.project-output-type }}</a></b> ( $(echo ${{ steps.build-data.outputs.artifact-size }} | numfmt --to=iec-i --suffix=B | awk '{printf "%.1f %s\n", $1/1, $2}') )</p>" >> $GITHUB_STEP_SUMMARY
                   echo "<p>Build SHA: ${{ steps.build-data.outputs.artifact-sha }}</p>" >> $GITHUB_STEP_SUMMARY
-                  echo "| ID | Name | Status | Duration |" >> $GITHUB_STEP_SUMMARY
+                  echo "| Hash | Name | Status | Duration |" >> $GITHUB_STEP_SUMMARY
                   echo "|---|---|---|---|" >> $GITHUB_STEP_SUMMARY
                   echo "| ${GITHUB_SHA:0:7} | ${{ github.event.repository.name }} | ✅ completed | ${{ needs.build.outputs.build-time }} |" >> $GITHUB_STEP_SUMMARY
                   echo "<br />" >> $GITHUB_STEP_SUMMARY
