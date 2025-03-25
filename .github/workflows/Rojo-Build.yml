@@ -93,12 +93,12 @@ jobs:
               run: echo "START_TIME=$SECONDS" >> $GITHUB_ENV
 
             - name: Install LuaJIT
-              uses: leafo/gh-actions-lua@v10
+              uses: leafo/gh-actions-lua@v11
               with:
                   luaVersion: luajit
 
             - name: Install Lua Version ${{ inputs.lua-version }}
-              uses: leafo/gh-actions-lua@v10
+              uses: leafo/gh-actions-lua@v11
               with:
                   luaVersion: ${{ inputs.lua-version }}
 
