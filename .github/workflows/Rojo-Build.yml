@@ -199,7 +199,7 @@ jobs:
               run: |
                   FINAL_TIME=$(date +%s)
                   RUNTIME=$((FINAL_TIME - START_TIME))
-                  echo "duration=$(RUNTIME)s" >> $GITHUB_OUTPUT
+                  echo "duration=$RUNTIME Seconds" >> $GITHUB_OUTPUT
 
             - name: Upload Rojo Build
               id: build
