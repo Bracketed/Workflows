@@ -176,7 +176,7 @@ jobs:
             - name: Generate Summary Values
               working-directory: ${{ github.workspace }}
               run: |
-                  echo "SIZE=$(stat --format=%s ${{ needs.build.outputs.build-label }}-BUILD/${{ needs.build.outputs.build-file }} | numfmt --to=iec-i --suffix=B)" >> $GITHUB_ENV
+                  echo "SIZE=$(stat --format=%s ${{ needs.build.outputs.build-label }}-BUILD/${{ needs.build.outputs.build-file }} | numfmt --to=iec --suffix=B | sed 's/\([0-9.]*\)\([A-Za-z]*\)$/\1 \2/' | sed 's/KiB/Kibibytes/' | sed 's/MiB/Mebibytes/' | sed 's/GiB/Gibibytes/' | sed 's/TiB/Tebibytes/' | sed 's/PiB/Pebibytes/')" >> $GITHUB_ENV
 
             - name: Generate Build and Runtime Summary
               working-directory: ${{ github.workspace }}
