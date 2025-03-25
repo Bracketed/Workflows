@@ -121,13 +121,19 @@ jobs:
               id: build-time
               run: echo "duration=$((SECONDS - START_TIME))s" >> $GITHUB_OUTPUT
 
-            - name: Upload Build Rojo Log & Rojo Build
+            - name: Upload Rojo Build
               uses: actions/upload-artifact@v4.6.2
               with:
                   name: ${{ inputs.artifact-label }}
-                  path: |
-                      ${{ inputs.project-output }}.${{ inputs.project-output-type }}
-                      rojo-build-${{ github.run_number }}.log
+                  path: ${{ inputs.project-output }}.${{ inputs.project-output-type }}
+                  if-no-files-found: error
+                  overwrite: true
+
+            - name: Upload Rojo Build Log
+              uses: actions/upload-artifact@v4.6.2
+              with:
+                  name: ${{ inputs.artifact-label }}-LOG
+                  path: rojo-build-${{ github.run_number }}.log
                   if-no-files-found: error
                   overwrite: true
 
