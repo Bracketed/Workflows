@@ -36,7 +36,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 #### Actions:
 
 *   [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
-*   [Fetch Artifact URL](#actions/fetch-artifact-url/action.yml)
+*   [Fetch Artifact URL](#actions/fetch-artifact/action.yml)
 *   [Configure Git CLI](#actions/git-configure/action.yml)
 *   [Install Aftman](#actions/install-aftman/action.yml)
 *   [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
@@ -95,7 +95,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 #### [Build Rojo Project](#.github/workflows/Rojo-Build.yml)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Rojo-Build.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Rojo-Build.yml)
-*   Description: Cancel a Github Actions Workflow with the gh CLI
+*   Description: Build a Rojo Project with Aftman
 
 **Inputs:**
 
@@ -131,7 +131,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `true`
     *   Type: `string`
-*   **repository-owner**: The repository owner (default `bracketed`, can be customised)
+*   **repository-owner**: The repository owner (default `bracketed`)
     *   Required: `false`
     *   Default: `bracketed`
     *   Type: `string`
@@ -217,9 +217,9 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
-#### [Fetch Artifact URL](#actions/fetch-artifact-url/action.yml)
+#### [Fetch Artifact URL](#actions/fetch-artifact/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/fetch-artifact-url@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/fetch-artifact-url/action.yml)
+*   Component link: `Bracketed/Workflows/actions/fetch-artifact@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/fetch-artifact/action.yml)
 *   Description: Fetch the artifact URL from a workflow run
 
 **Inputs:**
@@ -293,7 +293,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 25/03/2025 in **[87a8ca9](Bracketed/Workflows.git/commit/87a8ca9d724bc933c4aa1f47f70d47d91a3f162d)**_  
+_Last Edited by ninjaninja140 at 25/03/2025 in **[9010130](Bracketed/Workflows.git/commit/90101304f38bed15cb89c588ff174b9e894ae141)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
