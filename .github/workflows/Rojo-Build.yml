@@ -139,7 +139,7 @@ jobs:
                   echo "name=$(jq -r .name ${{ inputs.project-file }})" >> $GITHUB_OUTPUT
 
             - name: Start Install & Build Timer
-              run: echo "START_TIME=$SECONDS" >> $GITHUB_ENV
+              run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
 
             - name: Initialise Windows Build Support
               uses: ilammy/msvc-dev-cmd@v1
@@ -196,7 +196,10 @@ jobs:
 
             - name: End Build Timer & Output Total Build Time
               id: build-time
-              run: echo "duration=$((SECONDS - START_TIME))s" >> $GITHUB_OUTPUT
+              run: |
+                  FINAL_TIME=$(date +%s)
+                  RUNTIME=$((FINAL_TIME - START_TIME))
+                  echo "duration=$(RUNTIME)s" >> $GITHUB_OUTPUT
 
             - name: Upload Rojo Build
               id: build
