@@ -1,5 +1,6 @@
 name: Configure Git CLI
 description: Configure the Git CLI with the correct values and objects for usage in a command line environment
+author: bracketed
 
 inputs:
     GITHUB_TOKEN:

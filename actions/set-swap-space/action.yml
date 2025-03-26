@@ -1,5 +1,6 @@
 name: Set Memory Swap Space
 description: Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
+author: pierotofy
 
 inputs:
     swap-size:

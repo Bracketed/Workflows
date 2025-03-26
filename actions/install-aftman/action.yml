@@ -1,5 +1,6 @@
 name: Install Aftman
 description: Github action to install the Aftman toolchain manager - A fork of ok-nic/setup-aftman
+author: ok-nic
 
 inputs:
     version:
