@@ -2,6 +2,8 @@
 
 Eden's list of actions and workflows to make
 
+- Roblox Toolchain install Action
+- Roblox Toolchain install Workflow
 - Build & Publish (docker) Workflow
 - Build & Run (docker) Workflow
 - Prettier/eslint lint workflow
