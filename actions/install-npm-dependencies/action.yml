@@ -19,12 +19,6 @@ author: bracketed
 runs:
     using: composite
     steps:
-        - name: Set up swap space
-          if: runner.os == 'Linux'
-          uses: Bracketed/Workflows/actions/set-swap-space@main
-          with:
-              swap-size: 10
-
         - name: Use Node.js v23
           uses: actions/setup-node@v4
           with:
