@@ -1,6 +1,6 @@
 {
 	"name": "@bracketed/actions-manager",
-	"packageManager": "yarn@4.9.0",
+	"packageManager": "yarn@4.9.1",
 	"main": "dist/index.js",
 	"scripts": {
 		"start": "yarn node ./dist/index.mjs",
