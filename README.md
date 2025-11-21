@@ -27,23 +27,23 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 
 #### Workflows:
 
-*   [Node Package Publish](#.github/workflows/Package-Publish.yml)
-*   [README.md Updater](#.github/workflows/Repository-Update.yml)
-*   [Build Rojo Project](#.github/workflows/Rojo-Build.yml)
-*   [Package.json Version Check](#.github/workflows/Version-Check.yml)
-*   [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
+*   [Node Package Publish](#node-package-publish)
+*   [README.md Updater](#readme-md-updater)
+*   [Build Rojo Project](#build-rojo-project)
+*   [Package.json Version Check](#package-json-version-check)
+*   [Cancel Workflow](#cancel-workflow)
 
 #### Actions:
 
-*   [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
-*   [Configure Git CLI](#actions/git-configure/action.yml)
-*   [Install Aftman](#actions/install-aftman/action.yml)
-*   [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
-*   [Configure Git CLI](#actions/install-rokit/action.yml)
-*   [Generate Self-hosted Runner Token](#actions/make-runner/action.yml)
-*   [Set Memory Swap Space](#actions/set-swap-space/action.yml)
+*   [Install dependencies with Yarn](#install-dependencies-with-yarn)
+*   [Configure Git CLI](#configure-git-cli)
+*   [Install Aftman](#install-aftman)
+*   [Install dependencies with NPM](#install-dependencies-with-npm)
+*   [Configure Git CLI](#configure-git-cli)
+*   [Generate Self-hosted Runner Token](#generate-self-hosted-runner-token)
+*   [Set Memory Swap Space](#set-memory-swap-space)
 ## Workflows:
-#### [Node Package Publish](#.github/workflows/Package-Publish.yml)
+#### [Node Package Publish](#node-package-publish)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Package-Publish.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Package-Publish.yml)
 *   Description: Publish a node package to the NPM registry
@@ -89,11 +89,37 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `main`
     *   Type: `string`
-#### [README.md Updater](#.github/workflows/Repository-Update.yml)
+
+**Example Usage:**
+
+    name: Example Workflow
+    on:
+      push:
+        branches: [main]
+    
+    jobs:
+      example:
+        uses: Bracketed/Workflows/.github/workflows/Package-Publish.yml@copilot/fix-anchor-links-readme-builder
+        with:
+          project-name: @${{ github.repository }}
+          repository-owner: bracketed
+          node-version: 23
+#### [README.md Updater](#readme-md-updater)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Repository-Update.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Repository-Update.yml)
 *   Description: Automatically updates the README.md file of this repository, this is NOT a reusable workflow
-#### [Build Rojo Project](#.github/workflows/Rojo-Build.yml)
+
+**Example Usage:**
+
+    name: Example Workflow
+    on:
+      push:
+        branches: [main]
+    
+    jobs:
+      example:
+        uses: Bracketed/Workflows/.github/workflows/Repository-Update.yml@copilot/fix-anchor-links-readme-builder
+#### [Build Rojo Project](#build-rojo-project)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Rojo-Build.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Rojo-Build.yml)
 *   Description: Build a Rojo Project with Aftman
@@ -165,7 +191,22 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `true`
     *   Type: `boolean`
-#### [Package.json Version Check](#.github/workflows/Version-Check.yml)
+
+**Example Usage:**
+
+    name: Example Workflow
+    on:
+      push:
+        branches: [main]
+    
+    jobs:
+      example:
+        uses: Bracketed/Workflows/.github/workflows/Rojo-Build.yml@copilot/fix-anchor-links-readme-builder
+        with:
+          project-name: @${{ github.repository }}
+          project-context: .
+          project-output: ${{ github.repository_owner }}~${{ github.event.repository.name }}~${GITHUB_SHA:0:7}
+#### [Package.json Version Check](#package-json-version-check)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Version-Check.yml)
 *   Description: Check the package.json version for a new version or same version
@@ -202,7 +243,22 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `${{ github.ref }}`
     *   Type: `string`
-#### [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
+
+**Example Usage:**
+
+    name: Example Workflow
+    on:
+      push:
+        branches: [main]
+    
+    jobs:
+      example:
+        uses: Bracketed/Workflows/.github/workflows/Version-Check.yml@copilot/fix-anchor-links-readme-builder
+        with:
+          cancel-on-same: false
+          project-name: @${{ github.repository }}
+          repository-owner: bracketed
+#### [Cancel Workflow](#cancel-workflow)
 
 *   Component link: `Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Workflow-Cancel.yml)
 *   Description: Cancel a Github Actions Workflow with the gh CLI
@@ -217,8 +273,22 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `ubuntu-latest`
     *   Type: `string`
+
+**Example Usage:**
+
+    name: Example Workflow
+    on:
+      push:
+        branches: [main]
+    
+    jobs:
+      example:
+        uses: Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@copilot/fix-anchor-links-readme-builder
+        with:
+          repository-owner: bracketed
+          operating-system: ubuntu-latest
 ## Actions:
-#### [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
+#### [Install dependencies with Yarn](#install-dependencies-with-yarn)
 
 *   Component link: `Bracketed/Workflows/actions/add-yarn-dependencies@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/add-yarn-dependencies/action.yml)
 *   Description: Setup Node and install dependencies using Yarn.
@@ -236,7 +306,17 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
-#### [Configure Git CLI](#actions/git-configure/action.yml)
+
+**Example Usage:**
+
+    steps:
+      - name: Install dependencies with Yarn
+        uses: Bracketed/Workflows/actions/add-yarn-dependencies@copilot/fix-anchor-links-readme-builder
+        with:
+          immutable: false
+          flags: 
+          node-version: 23
+#### [Configure Git CLI](#configure-git-cli)
 
 *   Component link: `Bracketed/Workflows/actions/git-configure@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/git-configure/action.yml)
 *   Description: Configure the Git CLI with the correct values and objects for usage in a command line environment
@@ -246,7 +326,15 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 *   **GITHUB_TOKEN**: The Github Token to utilise when running this action
     *   Required: `true`
     *   Type: `string`
-#### [Install Aftman](#actions/install-aftman/action.yml)
+
+**Example Usage:**
+
+    steps:
+      - name: Configure Git CLI
+        uses: Bracketed/Workflows/actions/git-configure@copilot/fix-anchor-links-readme-builder
+        with:
+          GITHUB_TOKEN: ${{ secrets.EXAMPLE_GITHUB_TOKEN }}
+#### [Install Aftman](#install-aftman)
 
 *   Component link: `Bracketed/Workflows/actions/install-aftman@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/install-aftman/action.yml)
 *   Description: Github action to install the Aftman toolchain manager - A fork of ok-nic/setup-aftman
@@ -268,7 +356,17 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `${{ github.token }}`
     *   Type: `string`
-#### [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
+
+**Example Usage:**
+
+    steps:
+      - name: Install Aftman
+        uses: Bracketed/Workflows/actions/install-aftman@copilot/fix-anchor-links-readme-builder
+        with:
+          version: ${{ secrets.EXAMPLE_VERSION }}
+          context: .
+          cache: false
+#### [Install dependencies with NPM](#install-dependencies-with-npm)
 
 *   Component link: `Bracketed/Workflows/actions/install-npm-dependencies@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/install-npm-dependencies/action.yml)
 *   Description: Setup Node and install dependencies using NPM.
@@ -286,7 +384,17 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `23`
     *   Type: `string`
-#### [Configure Git CLI](#actions/install-rokit/action.yml)
+
+**Example Usage:**
+
+    steps:
+      - name: Install dependencies with NPM
+        uses: Bracketed/Workflows/actions/install-npm-dependencies@copilot/fix-anchor-links-readme-builder
+        with:
+          frozen: false
+          flags: 
+          node-version: 23
+#### [Configure Git CLI](#configure-git-cli)
 
 *   Component link: `Bracketed/Workflows/actions/install-rokit@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/install-rokit/action.yml)
 *   Description: Configure the Git CLI with the correct values and objects for usage in a command line environment
@@ -309,7 +417,17 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `.`
     *   Type: `string`
-#### [Generate Self-hosted Runner Token](#actions/make-runner/action.yml)
+
+**Example Usage:**
+
+    steps:
+      - name: Configure Git CLI
+        uses: Bracketed/Workflows/actions/install-rokit@copilot/fix-anchor-links-readme-builder
+        with:
+          toolchain-version: stable
+          rokit-version: latest
+          self-install: true
+#### [Generate Self-hosted Runner Token](#generate-self-hosted-runner-token)
 
 *   Component link: `Bracketed/Workflows/actions/make-runner@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/make-runner/action.yml)
 *   Description: Generate a token for a self-hosted GitHub Actions runner.
@@ -323,7 +441,16 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 *   **org**: Optional override for the organization name. Defaults to the repository owner.
     *   Required: `false`
     *   Type: `string`
-#### [Set Memory Swap Space](#actions/set-swap-space/action.yml)
+
+**Example Usage:**
+
+    steps:
+      - name: Generate Self-hosted Runner Token
+        uses: Bracketed/Workflows/actions/make-runner@copilot/fix-anchor-links-readme-builder
+        with:
+          token: ${{ github.token }}
+          org:
+#### [Set Memory Swap Space](#set-memory-swap-space)
 
 *   Component link: `Bracketed/Workflows/actions/set-swap-space@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/set-swap-space/action.yml)
 *   Description: Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
@@ -334,9 +461,17 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `10`
     *   Type: `string`
+
+**Example Usage:**
+
+    steps:
+      - name: Set Memory Swap Space
+        uses: Bracketed/Workflows/actions/set-swap-space@copilot/fix-anchor-links-readme-builder
+        with:
+          swap-size: 10
 * * *
 
-_Last Edited by copilot-swe-agent[bot] at 21/11/2025 in **[9d7ebc1](Bracketed/Workflows/commit/9d7ebc1ca5875086d0372b2c5f9ade9842ed8c8a)**_  
+_Last Edited by copilot-swe-agent[bot] at 21/11/2025 in **[024b626](Bracketed/Workflows/commit/024b62683472c13b65cf4a250a0c09ebbfa813e5)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *

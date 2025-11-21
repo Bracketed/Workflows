@@ -6,3 +6,4 @@ export * from './getRepository';
 export * from './isType';
 export * from './parseURL';
 export * from './strip-first';
+export * from './toAnchorId';
