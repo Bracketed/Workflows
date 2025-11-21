@@ -1,4 +1,4 @@
-FROM node:bullseye-slim AS base
+FROM node:bookworm-slim AS base
 WORKDIR /usr/src/app
 
 ENV GH_TOKEN=
@@ -9,7 +9,7 @@ COPY --chown=node:node LICENSE .
 COPY --chown=node:node renovate.json .
 COPY --chown=node:node .gitignore .
 COPY --chown=node:node .markdownlint.jsonc .
-COPY --chown=node:node .prettierrc .
+COPY --chown=node:node biome.json .
 COPY --chown=node:node Dockerfile .
 COPY --chown=node:node generate-types.ts .
 COPY --chown=node:node entrypoint.sh .
