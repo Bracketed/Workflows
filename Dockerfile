@@ -34,7 +34,6 @@ FROM base AS builder
 COPY --chown=node:node tsconfig.json .
 COPY --chown=node:node tsup.config.ts .
 
-RUN corepack enable
 RUN yarn set version stable
 RUN yarn install
 RUN yarn generate
