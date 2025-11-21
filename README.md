@@ -40,6 +40,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 *   [Install Aftman](#actions/install-aftman/action.yml)
 *   [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
 *   [Configure Git CLI](#actions/install-rokit/action.yml)
+*   [Generate Self-hosted Runner Token](#actions/make-runner/action.yml)
 *   [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 ## Workflows:
 #### [Node Package Publish](#.github/workflows/Package-Publish.yml)
@@ -308,6 +309,20 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Required: `false`
     *   Default: `.`
     *   Type: `string`
+#### [Generate Self-hosted Runner Token](#actions/make-runner/action.yml)
+
+*   Component link: `Bracketed/Workflows/actions/make-runner@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/make-runner/action.yml)
+*   Description: Generate a token for a self-hosted GitHub Actions runner.
+
+**Inputs:**
+
+*   **token**: Authentication token for gh CLI, defaults to the workflow GITHUB_TOKEN.
+    *   Required: `false`
+    *   Default: `${{ github.token }}`
+    *   Type: `string`
+*   **org**: Optional override for the organization name. Defaults to the repository owner.
+    *   Required: `false`
+    *   Type: `string`
 #### [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 
 *   Component link: `Bracketed/Workflows/actions/set-swap-space@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/set-swap-space/action.yml)
@@ -321,7 +336,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by github-actions[bot] at 01/06/2025 in **[038d421](Bracketed/Workflows.git/commit/038d421e57c2badeb6c2ed3da2d96128ed44ea31)**_  
+_Last Edited by ninjaninja140 at 21/11/2025 in **[09495f2](Bracketed/Workflows.git/commit/09495f2059e51156f48037ee56c159d055d2f0a7)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
