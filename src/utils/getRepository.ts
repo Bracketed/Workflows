@@ -6,7 +6,7 @@ export function getGitRepo(): string {
 	try {
 		Console.info('Getting Github Repository from git...');
 		const output = execSync('git remote get-url origin', { encoding: 'utf8' });
-		const match = output.trim().match(/(?:github\.com[:\/])([^\/]+)\/([^\/]+)/);
+		const match = output.trim().match(/(?:github\.com[:/])([^/]+)\/([^/]+)/);
 
 		if (match && match[1] && match[2]) {
 			Console.info('Found Repository:', `${match[1]}/${match[2]}`);

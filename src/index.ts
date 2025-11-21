@@ -13,6 +13,8 @@
 			@author ninjaninja140
 			@name workflows-updater
 */
+import type { ActionCallInputs, ActionWorkflow, FileDataMap, WorkflowCall } from '@/types/index';
+import { buildURL, isGithubAction, isGithubWorkflow, stripFirst } from '@/utils/index';
 import { Logger } from '@bracketed/logger';
 import promised from 'node:fs/promises';
 import {
@@ -23,73 +25,75 @@ import {
 	buildItemMarkdown,
 } from './components';
 import { ActionsFinder } from './finder';
-import type { ActionCallInputs, ActionWorkflow, FileDataMap, WorkflowCall } from './types';
-import { buildURL, isGithubAction, isGithubWorkflow, stripFirst } from './utils';
 console.clear();
 
-const Console: Logger = new Logger({ depth: 6, prefix: 'Main' });
-const Finder: ActionsFinder = new ActionsFinder('../');
-const Files: Array<ActionWorkflow> = await Finder.load();
+async function main() {
+	const Console: Logger = new Logger({ depth: 6, prefix: 'Main' });
+	const Finder: ActionsFinder = new ActionsFinder('../');
+	const Files: Array<ActionWorkflow> = await Finder.load();
 
-const Data: Array<FileDataMap> = Files.map((a) => {
-	let inputs;
-	let type;
+	const Data: Array<FileDataMap> = Files.map((a) => {
+		let inputs;
+		let type;
 
-	if (isGithubAction(a.content)) {
-		type = 'action';
-		const Call: ActionCallInputs | undefined = a.content.inputs;
+		if (isGithubAction(a.content)) {
+			type = 'action';
+			const Call: ActionCallInputs | undefined = a.content.inputs;
 
-		if (!Call) inputs = {};
-		else inputs = Call;
-	}
+			if (!Call) inputs = {};
+			else inputs = Call;
+		}
 
-	if (isGithubWorkflow(a.content)) {
-		type = 'workflow';
-		const Call: WorkflowCall | undefined = Object.values(a.content.on)[0] ?? undefined;
+		if (isGithubWorkflow(a.content)) {
+			type = 'workflow';
+			const Call: WorkflowCall | undefined = Object.values(a.content.on)[0] ?? undefined;
 
-		if (!Call) inputs = {};
-		else inputs = Call.inputs;
-	}
+			if (!Call) inputs = {};
+			else inputs = Call.inputs;
+		}
 
-	inputs = Object.entries(inputs as object).map(([key, value]) => ({
-		name: key,
-		values: value,
+		inputs = Object.entries(inputs as object).map(([key, value]) => ({
+			name: key,
+			values: value,
+		}));
+
+		return {
+			type: type,
+			file: stripFirst(a.relative).replace(/\\/g, '/'),
+			dir: stripFirst(a.directory).replace(/\\/g, '/'),
+			content: {
+				name: a.content.name as string,
+				url: buildURL(stripFirst(a.relative).replace(/\\/g, '/')),
+				description: a.content.description,
+				inputs: inputs ?? [],
+			},
+		};
+	}).map((a) => ({
+		...a,
+		markdown: buildItemMarkdown(a),
 	}));
 
-	return {
-		type: type,
-		file: stripFirst(a.relative).replace(/\\/g, '/'),
-		dir: stripFirst(a.directory).replace(/\\/g, '/'),
-		content: {
-			name: a.content.name as string,
-			url: buildURL(stripFirst(a.relative).replace(/\\/g, '/')),
-			description: a.content.description,
-			inputs: inputs ?? [],
-		},
-	};
-}).map((a) => ({
-	...a,
-	markdown: buildItemMarkdown(a),
-}));
+	const Workflows = Data.filter((a) => a.type === 'workflow');
+	const Actions = Data.filter((a) => a.type === 'action');
 
-const Workflows = Data.filter((a) => a.type === 'workflow');
-const Actions = Data.filter((a) => a.type === 'action');
+	Console.info('Building React & Markdown...');
+	const Content: Array<string> = [
+		buildBaseMarkdown(),
+		buildGlossaryMarkdown({ name: 'Workflows', data: Workflows }, { name: 'Actions', data: Actions }),
+		'## Workflows:',
+		...Workflows.map((w) => w.markdown),
+		'## Actions:',
+		...Actions.map((w) => w.markdown),
+		buildDateFooterMarkdown(),
+		buildFooterMarkdown(),
+	];
 
-Console.info('Building React & Markdown...');
-const Content: Array<string> = [
-	buildBaseMarkdown(),
-	buildGlossaryMarkdown({ name: 'Workflows', data: Workflows }, { name: 'Actions', data: Actions }),
-	'## Workflows:',
-	...Workflows.map((w) => w.markdown),
-	'## Actions:',
-	...Actions.map((w) => w.markdown),
-	buildDateFooterMarkdown(),
-	buildFooterMarkdown(),
-];
+	Console.info('Build & Organised React Components!');
 
-Console.info('Build & Organised React Components!');
+	await promised.writeFile('./README.md', Content.join('\n').replaceAll('\\', ''), { encoding: 'utf8' });
+	Console.info('Saved new documentation data!');
 
-await promised.writeFile('./README.md', Content.join('\n').replaceAll('\\', ''), { encoding: 'utf8' });
-Console.info('Saved new documentation data!');
+	process.exit(0);
+}
 
-process.exit(0);
+main();

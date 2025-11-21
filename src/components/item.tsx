@@ -1,10 +1,10 @@
+import type { FinderItem } from '@/types/index';
+import { getGitBranch, getGitRepo } from '@/utils/index';
 import { Logger } from '@bracketed/logger';
 import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import TurndownService from 'turndown';
-import type { FinderItem } from '../types';
-import { getGitBranch, getGitRepo } from '../utils';
 
 const Component: React.FC<FinderItem> = (props: FinderItem) => (
 	<div>
@@ -46,12 +46,7 @@ export const buildItemMarkdown = (item: FinderItem) => {
 	const Turndown = new TurndownService();
 	const CheerioComponent = cheerio.load(
 		ReactDOMServer.renderToStaticMarkup(
-			<Component
-				content={item.content}
-				file={item.file}
-				dir={item.dir}
-				type={item.type}
-			/>
+			<Component content={item.content} file={item.file} dir={item.dir} type={item.type} />
 		)
 	);
 

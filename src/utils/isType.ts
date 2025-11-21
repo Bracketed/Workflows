@@ -1,4 +1,4 @@
-import type { HttpsJsonSchemastoreOrgGithubActionJson, Workflow } from '../types';
+import type { HttpsJsonSchemastoreOrgGithubActionJson, Workflow } from '@/types/index';
 
 export function isGithubAction(content: unknown): content is HttpsJsonSchemastoreOrgGithubActionJson {
 	return (

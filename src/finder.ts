@@ -1,9 +1,9 @@
+import type { ActionWorkflow, HttpsJsonSchemastoreOrgGithubActionJson, Workflow } from '@/types/index';
 import { Logger } from '@bracketed/logger';
 import yaml from 'js-yaml';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { ActionWorkflow, HttpsJsonSchemastoreOrgGithubActionJson, Workflow } from './types';
 import { stripFirst } from './utils';
 
 export class ActionsFinder {

@@ -1,9 +1,9 @@
+import { getGitRepo, getLatestCommitFullHash, getLatestCommitHash, getLatestCommitUser } from '@/utils/index';
 import { Logger } from '@bracketed/logger';
 import * as cheerio from 'cheerio';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import TurndownService from 'turndown';
-import { getGitRepo, getLatestCommitFullHash, getLatestCommitHash, getLatestCommitUser } from '../utils';
 
 const Component: React.FC = () => (
 	<div>

@@ -1,35 +1,38 @@
 {
 	"name": "@bracketed/actions-manager",
-	"packageManager": "yarn@4.9.1",
-	"main": "dist/index.js",
+	"packageManager": "yarn@4.11.0",
+	"main": "dist/index.mjs",
+	"type": "module",
 	"scripts": {
 		"start": "yarn node ./dist/index.mjs",
 		"test": "yarn compile && yarn start",
 		"compile": "yarn tsup",
-		"generate": "yarn node ./generate-types.ts"
+		"generate": "yarn tsx ./generate-types.ts"
 	},
 	"devDependencies": {
-		"@bracketed/typescript-config": "^4.4.0",
-		"@types/js-yaml": "^4",
-		"@types/node": "^22.13.11",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
-		"@types/turndown": "^5.0.5",
-		"esbuild": "^0.25.1",
+		"@biomejs/biome": "^2.3.7",
+		"@bracketed/tsup-configuration": "^1.0.5",
+		"@bracketed/typescript-config": "^4.7.1",
+		"@swc/core": "^1.15.3",
+		"@types/js-yaml": "^4.0.9",
+		"@types/node": "^24.10.1",
+		"@types/react": "^19.2.6",
+		"@types/react-dom": "^19.2.3",
+		"@types/turndown": "^5.0.6",
+		"esbuild": "^0.27.0",
 		"esbuild-plugin-file-path-extensions": "^2.1.4",
 		"esbuild-plugin-version-injector": "^1.2.1",
-		"prettier": "^3.5.3",
-		"tsup": "^8.4.0",
-		"tsx": "^4.19.3",
-		"typescript": "^5.8.2"
+		"tsup": "^8.5.1",
+		"tsx": "^4.20.6",
+		"typescript": "^5.9.3"
 	},
 	"dependencies": {
-		"@bracketed/logger": "^1.0.12",
-		"cheerio": "^1.0.0",
-		"js-yaml": "^4.1.0",
+		"@bracketed/logger": "^1.1.1",
+		"cheerio": "^1.1.2",
+		"js-yaml": "^4.1.1",
 		"json-schema-to-typescript": "^15.0.4",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"turndown": "^7.2.0"
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"turndown": "^7.2.2"
 	}
 }
