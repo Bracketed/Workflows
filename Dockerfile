@@ -26,8 +26,8 @@ RUN apt-get update -y && \
 
 RUN mkdir schemas
 RUN chown node:node schemas
-RUN curl https://www.schemastore.org/github-action.json -o schemas/actions.json
-RUN curl https://www.schemastore.org/github-workflow.json -o schemas/workflows.json
+RUN curl -L https://www.schemastore.org/github-action.json -o schemas/actions.json
+RUN curl -L https://www.schemastore.org/github-workflow.json -o schemas/workflows.json
 RUN chmod +x ./entrypoint.sh
 
 FROM base AS builder
