@@ -1,7 +1,8 @@
 import type { FileDataMap } from '@/types/index';
+import { toAnchorId } from '@/utils/index';
 import { Logger } from '@bracketed/logger';
 import * as cheerio from 'cheerio';
-import React from 'react';
+import type React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import TurndownService from 'turndown';
 
@@ -16,7 +17,7 @@ const Component: React.FC<{ data: Array<{ name: string; data: Array<FileDataMap>
 				<ul>
 					{d.data.map((d, id) => (
 						<li key={id}>
-							<a href={`#${d.file}`}>{d.content.name}</a>
+							<a href={`#${toAnchorId(d.content.name)}`}>{d.content.name}</a>
 						</li>
 					))}
 				</ul>
