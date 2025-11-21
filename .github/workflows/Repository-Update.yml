@@ -3,8 +3,6 @@ description: Automatically updates the README.md file of this repository, this i
 
 on:
     workflow_dispatch:
-    schedule:
-        - cron: '0 0 * * 0'
     push:
         paths:
             - '**/*.ts'
