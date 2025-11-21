@@ -45,7 +45,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Workflows:
 #### [Node Package Publish](#.github/workflows/Package-Publish.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows/Package-Publish.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Package-Publish.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Package-Publish.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Package-Publish.yml)
 *   Description: Publish a node package to the NPM registry
 
 **Inputs:**
@@ -91,11 +91,11 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [README.md Updater](#.github/workflows/Repository-Update.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows/Repository-Update.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Repository-Update.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Repository-Update.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Repository-Update.yml)
 *   Description: Automatically updates the README.md file of this repository, this is NOT a reusable workflow
 #### [Build Rojo Project](#.github/workflows/Rojo-Build.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows/Rojo-Build.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Rojo-Build.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Rojo-Build.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Rojo-Build.yml)
 *   Description: Build a Rojo Project with Aftman
 
 **Inputs:**
@@ -167,7 +167,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `boolean`
 #### [Package.json Version Check](#.github/workflows/Version-Check.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Version-Check.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Version-Check.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Version-Check.yml)
 *   Description: Check the package.json version for a new version or same version
 
 **Inputs:**
@@ -204,7 +204,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Cancel Workflow](#.github/workflows/Workflow-Cancel.yml)
 
-*   Component link: `Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/.github/workflows/Workflow-Cancel.yml)
+*   Component link: `Bracketed/Workflows/.github/workflows/Workflow-Cancel.yml@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/.github/workflows/Workflow-Cancel.yml)
 *   Description: Cancel a Github Actions Workflow with the gh CLI
 
 **Inputs:**
@@ -220,7 +220,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
 ## Actions:
 #### [Install dependencies with Yarn](#actions/add-yarn-dependencies/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/add-yarn-dependencies@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/add-yarn-dependencies/action.yml)
+*   Component link: `Bracketed/Workflows/actions/add-yarn-dependencies@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/add-yarn-dependencies/action.yml)
 *   Description: Setup Node and install dependencies using Yarn.
 
 **Inputs:**
@@ -238,7 +238,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Configure Git CLI](#actions/git-configure/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/git-configure@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/git-configure/action.yml)
+*   Component link: `Bracketed/Workflows/actions/git-configure@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/git-configure/action.yml)
 *   Description: Configure the Git CLI with the correct values and objects for usage in a command line environment
 
 **Inputs:**
@@ -248,7 +248,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Install Aftman](#actions/install-aftman/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/install-aftman@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/install-aftman/action.yml)
+*   Component link: `Bracketed/Workflows/actions/install-aftman@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/install-aftman/action.yml)
 *   Description: Github action to install the Aftman toolchain manager - A fork of ok-nic/setup-aftman
 
 **Inputs:**
@@ -270,7 +270,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Install dependencies with NPM](#actions/install-npm-dependencies/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/install-npm-dependencies@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/install-npm-dependencies/action.yml)
+*   Component link: `Bracketed/Workflows/actions/install-npm-dependencies@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/install-npm-dependencies/action.yml)
 *   Description: Setup Node and install dependencies using NPM.
 
 **Inputs:**
@@ -288,7 +288,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Configure Git CLI](#actions/install-rokit/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/install-rokit@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/install-rokit/action.yml)
+*   Component link: `Bracketed/Workflows/actions/install-rokit@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/install-rokit/action.yml)
 *   Description: Configure the Git CLI with the correct values and objects for usage in a command line environment
 
 **Inputs:**
@@ -311,7 +311,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Generate Self-hosted Runner Token](#actions/make-runner/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/make-runner@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/make-runner/action.yml)
+*   Component link: `Bracketed/Workflows/actions/make-runner@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/make-runner/action.yml)
 *   Description: Generate a token for a self-hosted GitHub Actions runner.
 
 **Inputs:**
@@ -325,7 +325,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 #### [Set Memory Swap Space](#actions/set-swap-space/action.yml)
 
-*   Component link: `Bracketed/Workflows/actions/set-swap-space@main` [[Source]](https://github.com/Bracketed/Workflows/blob/main/actions/set-swap-space/action.yml)
+*   Component link: `Bracketed/Workflows/actions/set-swap-space@copilot/fix-anchor-links-readme-builder` [[Source]](https://github.com/Bracketed/Workflows/blob/copilot/fix-anchor-links-readme-builder/actions/set-swap-space/action.yml)
 *   Description: Add more swap space for memory in Gigabytes - By `pierotofy/set-swap-space`
 
 **Inputs:**
@@ -336,7 +336,7 @@ A few of the actions or workflows used in this repository are forks of `sapphire
     *   Type: `string`
 * * *
 
-_Last Edited by ninjaninja140 at 21/11/2025 in **[09495f2](Bracketed/Workflows.git/commit/09495f2059e51156f48037ee56c159d055d2f0a7)**_  
+_Last Edited by copilot-swe-agent[bot] at 21/11/2025 in **[9d7ebc1](Bracketed/Workflows/commit/9d7ebc1ca5875086d0372b2c5f9ade9842ed8c8a)**_  
 
 - This repo automatically generates its README.md file, feel free to take a look or use the code in this repo!
 * * *
